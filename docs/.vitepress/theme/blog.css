@@ -1,0 +1,382 @@
+/* 博客页面样式 */
+.blog-hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4rem 2rem;
+  text-align: center;
+  margin: -2rem -2rem 3rem -2rem;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, #fff, #e0e7ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fbbf24;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.blog-search-section {
+  margin-bottom: 3rem;
+}
+
+.search-container {
+  display: flex;
+  max-width: 500px;
+  margin: 0 auto 1.5rem auto;
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.search-input {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border: none;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-btn {
+  padding: 1rem 1.5rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.filter-tags {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-tag {
+  padding: 0.5rem 1rem;
+  background: #f3f4f6;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.filter-tag:hover,
+.filter-tag.active {
+  background: #667eea;
+  color: white;
+}
+
+.blog-content {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 3rem;
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.article-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.article-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.article-card.featured {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.article-image {
+  height: 200px;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.article-card.featured .article-image {
+  height: 100%;
+}
+
+.image-placeholder {
+  font-size: 3rem;
+  color: white;
+}
+
+.article-content {
+  padding: 1.5rem;
+}
+
+.article-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.article-category {
+  background: #667eea;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.article-date {
+  color: #6b7280;
+}
+
+.article-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #1f2937;
+  line-height: 1.4;
+}
+
+.article-card.featured .article-title {
+  font-size: 1.5rem;
+}
+
+.article-excerpt {
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.article-tags {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: #f3f4f6;
+  color: #374151;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.article-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.page-btn {
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.page-btn:hover,
+.page-btn.active {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.blog-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.sidebar-widget {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.widget-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.popular-posts {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.popular-post {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.popular-post:hover {
+  background: #f9fafb;
+}
+
+.post-rank {
+  background: #667eea;
+  color: white;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.post-info h4 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: #1f2937;
+}
+
+.post-views {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag-item {
+  background: #f3f4f6;
+  color: #374151;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tag-item:hover {
+  background: #667eea;
+  color: white;
+}
+
+.archive-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.archive-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.archive-item:hover {
+  background: #f9fafb;
+}
+
+.archive-month {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.archive-count {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .blog-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .article-card.featured {
+    grid-column: span 1;
+    display: block;
+  }
+  
+  .hero-stats {
+    gap: 1.5rem;
+  }
+  
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .search-container {
+    margin: 0 1rem 1.5rem 1rem;
+  }
+  
+  .filter-tags {
+    padding: 0 1rem;
+  }
+}

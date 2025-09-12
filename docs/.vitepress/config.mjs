@@ -6,7 +6,8 @@ export default defineConfig({
   
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
-    ['meta', { name: 'keywords', content: '网络安全,渗透测试,漏洞分析,信息安全,CTF' }]
+    ['meta', { name: 'keywords', content: '网络安全,渗透测试,漏洞分析,信息安全,CTF' }],
+    ['link', { rel: 'stylesheet', href: '/theme/blog.css' }]
   ],
 
   themeConfig: {
@@ -189,5 +190,6 @@ export default defineConfig({
   server: {
     port: 3000,
     host: true
-  }
+  },
+
 })
