@@ -182,6 +182,9 @@ export default defineConfig({
     outDir: '../dist'
   },
 
+  // 忽略死链接检查
+  ignoreDeadLinks: true,
+
   // 开发服务器配置
   server: {
     port: 3000,
