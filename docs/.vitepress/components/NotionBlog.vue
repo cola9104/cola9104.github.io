@@ -79,37 +79,54 @@ export default {
       error.value = null
       
       try {
-        // 这里应该调用实际的Notion API
-        // 由于在浏览器环境中无法直接调用，我们使用模拟数据
-        const mockPosts = [
-          {
-            id: '1',
-            title: '2024年网络安全趋势分析',
-            slug: 'cybersecurity-trends-2024',
-            excerpt: '深入分析2024年网络安全领域的主要趋势和挑战，包括AI安全、云安全、零信任架构等热点话题。',
-            tags: ['网络安全', '趋势分析', 'AI安全'],
-            createdTime: '2024-01-15T10:00:00Z',
-            cover: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&h=200&fit=crop'
-          },
-          {
-            id: '2',
-            title: 'Web应用渗透测试实战指南',
-            slug: 'web-penetration-testing-guide',
-            excerpt: '详细介绍Web应用渗透测试的完整流程，从信息收集到漏洞利用的实战技巧和工具使用。',
-            tags: ['渗透测试', 'Web安全', '实战指南'],
-            createdTime: '2024-01-10T14:30:00Z',
-            cover: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=200&fit=crop'
-          },
-          {
-            id: '3',
-            title: 'CTF竞赛解题思路分享',
-            slug: 'ctf-solving-strategies',
-            excerpt: '分享CTF竞赛中的解题思路和技巧，涵盖Web、Pwn、Crypto等多个方向的实战经验。',
-            tags: ['CTF', '解题思路', '安全竞赛'],
-            createdTime: '2024-01-05T09:15:00Z',
-            cover: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=200&fit=crop'
+        // 调用实际的Notion API
+        const response = await fetch('/api/notion/posts', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
           }
-        ]
+        })
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+        }
+        
+        const data = await response.json()
+        posts.value = data.posts || []
+        
+        // 如果API调用失败，使用模拟数据作为后备
+        if (posts.value.length === 0) {
+          const mockPosts = [
+            {
+              id: '1',
+              title: '2024年网络安全趋势分析',
+              slug: 'cybersecurity-trends-2024',
+              excerpt: '深入分析2024年网络安全领域的主要趋势和挑战，包括AI安全、云安全、零信任架构等热点话题。',
+              tags: ['网络安全', '趋势分析', 'AI安全'],
+              createdTime: '2024-01-15T10:00:00Z',
+              cover: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&h=200&fit=crop'
+            },
+            {
+              id: '2',
+              title: 'Web应用渗透测试实战指南',
+              slug: 'web-penetration-testing-guide',
+              excerpt: '详细介绍Web应用渗透测试的完整流程，从信息收集到漏洞利用的实战技巧和工具使用。',
+              tags: ['渗透测试', 'Web安全', '实战指南'],
+              createdTime: '2024-01-10T14:30:00Z',
+              cover: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=200&fit=crop'
+            },
+            {
+              id: '3',
+              title: 'CTF竞赛解题思路分享',
+              slug: 'ctf-solving-strategies',
+              excerpt: '分享CTF竞赛中的解题思路和技巧，涵盖Web、Pwn、Crypto等多个方向的实战经验。',
+              tags: ['CTF', '解题思路', '安全竞赛'],
+              createdTime: '2024-01-05T09:15:00Z',
+              cover: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=200&fit=crop'
+            }
+          ]
+          posts.value = mockPosts
+        }
         
         // 模拟API延迟
         await new Promise(resolve => setTimeout(resolve, 1000))
