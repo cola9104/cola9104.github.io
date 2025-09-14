@@ -47,13 +47,13 @@ async function getEnhancedNotionData() {
     });
 
     const pagesData = await pagesResponse.json();
-    console.log(`✅ 找到 ${pagesData.results.length} 个页面`);
+    console.log(`✅ 找到 ${pagesData.results?.length || 0} 个页面`);
 
     // 3. 获取每个页面的详细内容（包括子页面）
     console.log('\n📖 步骤3: 获取页面详细内容...');
     const enhancedPages = [];
 
-    for (const page of pagesData.results) {
+    for (const page of pagesData.results || []) {
       console.log(`\n🔍 处理页面: ${page.id}`);
       
       // 获取页面属性
