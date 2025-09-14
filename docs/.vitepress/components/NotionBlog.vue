@@ -79,54 +79,75 @@ export default {
       error.value = null
       
       try {
-        // 调用实际的Notion API
-        const response = await fetch('/api/notion/posts', {
-          method: 'GET',
+        // 使用增强的Notion数据获取
+        const response = await fetch('https://api.notion.com/v1/databases/26822358-21c9-80de-bf43-cf8e6ff838d5/query', {
+          method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
-          }
+            'Authorization': 'Bearer ntn_Z91829129697EenwSBwmKQB1xdPOEjLK2i46iTzr9gf572',
+            'Content-Type': 'application/json',
+            'Notion-Version': '2022-06-28'
+          },
+          body: JSON.stringify({
+            page_size: 10
+          })
         })
         
         if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+          throw new Error(`Notion API Error: ${response.status}`)
         }
         
         const data = await response.json()
-        posts.value = data.posts || []
         
-        // 如果API调用失败，使用模拟数据作为后备
-        if (posts.value.length === 0) {
-          const mockPosts = [
-            {
-              id: '1',
-              title: '2024年网络安全趋势分析',
-              slug: 'cybersecurity-trends-2024',
-              excerpt: '深入分析2024年网络安全领域的主要趋势和挑战，包括AI安全、云安全、零信任架构等热点话题。',
-              tags: ['网络安全', '趋势分析', 'AI安全'],
-              createdTime: '2024-01-15T10:00:00Z',
-              cover: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&h=200&fit=crop'
-            },
-            {
-              id: '2',
-              title: 'Web应用渗透测试实战指南',
-              slug: 'web-penetration-testing-guide',
-              excerpt: '详细介绍Web应用渗透测试的完整流程，从信息收集到漏洞利用的实战技巧和工具使用。',
-              tags: ['渗透测试', 'Web安全', '实战指南'],
-              createdTime: '2024-01-10T14:30:00Z',
-              cover: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=200&fit=crop'
-            },
-            {
-              id: '3',
-              title: 'CTF竞赛解题思路分享',
-              slug: 'ctf-solving-strategies',
-              excerpt: '分享CTF竞赛中的解题思路和技巧，涵盖Web、Pwn、Crypto等多个方向的实战经验。',
-              tags: ['CTF', '解题思路', '安全竞赛'],
-              createdTime: '2024-01-05T09:15:00Z',
-              cover: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=200&fit=crop'
-            }
-          ]
-          posts.value = mockPosts
-        }
+        // 处理Notion数据
+        posts.value = data.results.map(page => {
+          const title = page.properties['名称']?.title?.[0]?.text?.content || 'Untitled'
+          const content = page.properties['文本']?.rich_text?.[0]?.text?.content || ''
+          
+          // 生成智能摘要
+          const excerpt = content.length > 200 ? content.substring(0, 200) + '...' : content
+          
+          // 生成智能标签
+          const tags = []
+          const text = (title + ' ' + content).toLowerCase()
+          if (text.includes('网络安全')) tags.push('网络安全')
+          if (text.includes('渗透测试')) tags.push('渗透测试')
+          if (text.includes('漏洞')) tags.push('漏洞分析')
+          if (text.includes('ctf')) tags.push('CTF竞赛')
+          if (text.includes('python') || text.includes('编程')) tags.push('编程技术')
+          if (tags.length === 0) tags.push('技术分享')
+          
+          // 生成智能分类
+          let category = '技术分享'
+          if (text.includes('网络安全')) category = '网络安全'
+          else if (text.includes('渗透测试')) category = '渗透测试'
+          else if (text.includes('漏洞')) category = '漏洞分析'
+          else if (text.includes('ctf')) category = 'CTF竞赛'
+          else if (text.includes('python') || text.includes('编程')) category = '编程技术'
+          
+          // 生成封面图标
+          const coverMap = {
+            '网络安全': '🛡️',
+            '渗透测试': '🎯',
+            '漏洞分析': '🔍',
+            'CTF竞赛': '🏆',
+            '编程技术': '💻',
+            '技术分享': '📝'
+          }
+          
+          return {
+            id: page.id,
+            title: title,
+            slug: title.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-'),
+            excerpt: excerpt,
+            tags: tags,
+            category: category,
+            createdTime: page.created_time,
+            lastEditedTime: page.last_edited_time,
+            cover: coverMap[category] || '📄',
+            readingTime: `${Math.ceil(content.length / 200)}分钟阅读`,
+            wordCount: content.length
+          }
+        })
         
         // 模拟API延迟
         await new Promise(resolve => setTimeout(resolve, 1000))
