@@ -96,11 +96,14 @@ function extractBlockContent(block) {
 
 // 生成URL友好的别名
 function generateSlug(title) {
-  return title
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
+  // 处理中文字符
+  const slug = title
+    .replace(/[^\w\s\u4e00-\u9fff-]/g, '') // 保留中文、英文、数字、空格、连字符
+    .replace(/\s+/g, '-') // 空格替换为连字符
     .trim();
+  
+  // 如果结果为空，使用默认值
+  return slug || 'untitled';
 }
 
 // 处理单个页面内容
@@ -201,35 +204,39 @@ async function detailedContentGenerator() {
         mainContent += '\n\n## 📄 子页面\n\n';
         
         for (const child of pageData.childPages) {
-          mainContent += `### ${child.title}\n\n`;
+          const childSlug = generateSlug(child.title);
+          mainContent += `### [${child.title}](./${childSlug}/)\n\n`;
           if (child.content && child.content.trim()) {
-            mainContent += child.content + '\n\n';
+            // 只显示内容的前200个字符作为预览
+            const preview = child.content.length > 200 ? 
+              child.content.substring(0, 200) + '...' : 
+              child.content;
+            mainContent += preview + '\n\n';
           } else {
             mainContent += `*${child.title}相关内容即将更新...*\n\n`;
           }
           
-          // 为子页面创建独立文件
-          const childSlug = generateSlug(child.title);
+          // 为子页面创建独立目录和文件
           let childFilePath;
           
           switch (title) {
             case '网络安全':
-              childFilePath = `docs/网络安全/${childSlug}.md`;
+              childFilePath = `docs/网络安全/${childSlug}/index.md`;
               break;
             case '渗透测试':
-              childFilePath = `docs/渗透测试/${childSlug}.md`;
+              childFilePath = `docs/渗透测试/${childSlug}/index.md`;
               break;
             case '漏洞分析':
-              childFilePath = `docs/漏洞分析/${childSlug}.md`;
+              childFilePath = `docs/漏洞分析/${childSlug}/index.md`;
               break;
             case '嵌入式安全':
-              childFilePath = `docs/嵌入式安全/${childSlug}.md`;
+              childFilePath = `docs/嵌入式安全/${childSlug}/index.md`;
               break;
             case 'CTF':
-              childFilePath = `docs/CTF竞赛/${childSlug}.md`;
+              childFilePath = `docs/CTF竞赛/${childSlug}/index.md`;
               break;
             default:
-              childFilePath = `docs/${title}/${childSlug}.md`;
+              childFilePath = `docs/${title}/${childSlug}/index.md`;
           }
           
           // 生成子页面文件
