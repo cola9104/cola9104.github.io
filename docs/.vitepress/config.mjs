@@ -29,49 +29,49 @@ export default defineConfig({
 
     // 侧边栏
     sidebar: {
-      '/cybersecurity/': [
+      '/网络安全/': [
         {
           text: '网络安全基础',
           items: [
-            { text: '网络安全概述', link: '/cybersecurity/overview' },
-            { text: '常见攻击类型', link: '/cybersecurity/attack-types' },
-            { text: '防护策略', link: '/cybersecurity/defense-strategies' }
+            { text: '网络安全概述', link: '/网络安全/概述' },
+            { text: '常见攻击类型', link: '/网络安全/攻击类型' },
+            { text: '防护策略', link: '/网络安全/防护策略' }
           ]
         },
         {
           text: '高级主题',
           items: [
-            { text: '零信任架构', link: '/cybersecurity/zero-trust' },
-            { text: '威胁情报', link: '/cybersecurity/threat-intelligence' },
-            { text: '安全运营中心', link: '/cybersecurity/soc' }
+            { text: '零信任架构', link: '/网络安全/零信任架构' },
+            { text: '威胁情报', link: '/网络安全/威胁情报' },
+            { text: '安全运营中心', link: '/网络安全/安全运营中心' }
           ]
         }
       ],
-      '/penetration-testing/': [
+      '/渗透测试/': [
         {
           text: '渗透测试基础',
           items: [
-            { text: '渗透测试流程', link: '/penetration-testing/process' },
-            { text: '信息收集', link: '/penetration-testing/reconnaissance' },
-            { text: '漏洞扫描', link: '/penetration-testing/vulnerability-scanning' }
+            { text: '渗透测试流程', link: '/渗透测试/测试流程' },
+            { text: '信息收集', link: '/渗透测试/信息收集' },
+            { text: '漏洞扫描', link: '/渗透测试/漏洞扫描' }
           ]
         },
         {
           text: '实战案例',
           items: [
-            { text: 'Web应用渗透', link: '/penetration-testing/web-pentest' },
-            { text: '内网渗透', link: '/penetration-testing/internal-network' },
-            { text: '移动应用安全', link: '/penetration-testing/mobile-security' }
+            { text: 'Web应用渗透', link: '/渗透测试/Web应用渗透' },
+            { text: '内网渗透', link: '/渗透测试/内网渗透' },
+            { text: '移动应用安全', link: '/渗透测试/移动应用安全' }
           ]
         }
       ],
-      '/vulnerability-analysis/': [
+      '/漏洞分析/': [
         {
           text: '漏洞分析',
           items: [
-            { text: '漏洞分类', link: '/vulnerability-analysis/classification' },
-            { text: 'CVE分析', link: '/vulnerability-analysis/cve-analysis' },
-            { text: '漏洞利用', link: '/vulnerability-analysis/exploitation' }
+            { text: '漏洞分类', link: '/漏洞分析/漏洞分类' },
+            { text: 'CVE分析', link: '/漏洞分析/CVE分析' },
+            { text: '漏洞利用', link: '/漏洞分析/漏洞利用' }
           ]
         }
       ],
