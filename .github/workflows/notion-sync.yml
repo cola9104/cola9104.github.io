@@ -3,11 +3,11 @@ name: Notion Content Sync
 on:
   # 手动触发
   workflow_dispatch:
-  
+
   # 定时同步（每天上午9点）
   schedule:
     - cron: '0 9 * * *'
-  
+
   # 推送时触发
   push:
     branches: [ main ]
@@ -27,33 +27,78 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
       
       - name: Install dependencies
         run: npm ci
-      
-      - name: Sync Notion Content
+
+    - name: Create .env file
+        run: |
+          cat > .env << EOF
+          NOTION_TOKEN=${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID=${{ secrets.NOTION_DATABASE_ID }}
+          NOTION_MAIN_PAGE_ID=${{ secrets.NOTION_MAIN_PAGE_ID }}
+          EOF
+
+    - name: Verify environment variables
+        run: |
+          echo "检查环境变量配置..."
+          if [ -z "$NOTION_TOKEN" ]; then
+            echo "❌ NOTION_TOKEN 未设置"
+            echo "请在 GitHub 仓库设置中添加 NOTION_TOKEN secret"
+            exit 1
+          fi
+          if [ -z "$NOTION_DATABASE_ID" ]; then
+            echo "❌ NOTION_DATABASE_ID 未设置"
+            echo "请在 GitHub 仓库设置中添加 NOTION_DATABASE_ID secret"
+            exit 1
+          fi
+          if [ -z "$NOTION_MAIN_PAGE_ID" ]; then
+            echo "⚠️ NOTION_MAIN_PAGE_ID 未设置，将使用默认值"
+          fi
+          echo "✅ 环境变量检查通过"
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          NOTION_MAIN_PAGE_ID: ${{ secrets.NOTION_MAIN_PAGE_ID }}
+
+    - name: Sync Notion Content and Update Sidebar
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          NOTION_MAIN_PAGE_ID: ${{ secrets.NOTION_MAIN_PAGE_ID }}
         run: |
+          echo "🔄 开始同步Notion内容..."
+
+          # 确保目录存在
+          mkdir -p docs/.vitepress
+
           # 创建同步脚本
           cat > sync-notion.js << 'EOF'
           import dotenv from 'dotenv';
           import fetch from 'node-fetch';
           import fs from 'fs';
-          
+
           dotenv.config();
-          
+
           const NOTION_TOKEN = process.env.NOTION_TOKEN;
           const DATABASE_ID = process.env.NOTION_DATABASE_ID;
-          
+
           async function syncNotionContent() {
             try {
               console.log('🔄 开始同步Notion内容...');
-              
+
+              // 验证必要的参数
+              if (!NOTION_TOKEN) {
+                throw new Error('NOTION_TOKEN 未设置');
+              }
+              if (!DATABASE_ID) {
+                throw new Error('NOTION_DATABASE_ID 未设置');
+              }
+
               // 获取数据库信息
+              console.log('📊 正在获取数据库信息...');
               const dbResponse = await fetch(`https://api.notion.com/v1/databases/${DATABASE_ID}`, {
                 headers: {
                   'Authorization': NOTION_TOKEN,
@@ -61,15 +106,22 @@ jobs:
                   'Notion-Version': '2022-06-28'
                 }
               });
-              
+
               if (!dbResponse.ok) {
-                throw new Error(`数据库查询失败: ${dbResponse.statusText}`);
+                if (dbResponse.status === 401) {
+                  throw new Error('NOTION_TOKEN 无效或过期');
+                } else if (dbResponse.status === 404) {
+                  throw new Error('NOTION_DATABASE_ID 不正确');
+                } else {
+                  throw new Error(`数据库查询失败: ${dbResponse.status} ${dbResponse.statusText}`);
+                }
               }
-              
+
               const dbData = await dbResponse.json();
               console.log(`📊 数据库标题: ${dbData.title[0]?.text?.content || 'Untitled'}`);
-              
+
               // 获取文章列表
+              console.log('📝 正在获取文章列表...');
               const postsResponse = await fetch(`https://api.notion.com/v1/databases/${DATABASE_ID}/query`, {
                 method: 'POST',
                 headers: {
@@ -92,18 +144,20 @@ jobs:
                   ]
                 })
               });
-              
+
               if (!postsResponse.ok) {
-                throw new Error(`文章查询失败: ${postsResponse.statusText}`);
+                throw new Error(`文章查询失败: ${postsResponse.status} ${postsResponse.statusText}`);
               }
-              
+
               const postsData = await postsResponse.json();
               console.log(`📝 找到 ${postsData.results.length} 篇已发布文章`);
-              
+
               // 生成内容摘要
               const summary = {
                 totalPosts: postsData.results.length,
                 lastSync: new Date().toISOString(),
+                status: 'success',
+                message: '同步成功',
                 posts: postsData.results.map(page => ({
                   id: page.id,
                   title: page.properties.Title?.title?.[0]?.text?.content || 'Untitled',
@@ -112,41 +166,77 @@ jobs:
                   lastEditedTime: page.last_edited_time
                 }))
               };
-              
+
               // 保存同步信息
               fs.writeFileSync('docs/.vitepress/notion-sync.json', JSON.stringify(summary, null, 2));
-              
+
               console.log('✅ Notion内容同步完成');
-              
+
             } catch (error) {
               console.error('❌ 同步失败:', error.message);
-              process.exit(1);
+
+              // 保存错误信息
+              const errorSummary = {
+                totalPosts: 0,
+                lastSync: new Date().toISOString(),
+                status: 'error',
+                message: error.message,
+                error: error.message
+              };
+
+              fs.writeFileSync('docs/.vitepress/notion-sync.json', JSON.stringify(errorSummary, null, 2));
+
+              // 不退出进程，继续执行后续步骤
+              console.log('⚠️ 继续执行后续步骤...');
             }
           }
-          
+
           syncNotionContent();
           EOF
-          
+
           # 运行同步脚本
           node sync-notion.js
+
+          # 运行页面合并脚本（网络安全页面）
+          echo "🔄 开始合并网络安全相关页面..."
+          if node merge-notion-pages-optimized.js; then
+            echo "✅ 网络安全页面合并成功"
+          else
+            echo "⚠️ 网络安全页面合并失败，但继续执行..."
+          fi
+
+          # 运行侧边栏配置更新脚本
+          echo "🔄 开始更新侧边栏配置..."
+          if node update-sidebar-merged.js; then
+            echo "✅ 侧边栏配置更新成功"
+          else
+            echo "⚠️ 侧边栏配置更新失败，但继续执行..."
+          fi
       
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          
-          if git diff --quiet; then
+
+          # 添加可能更改的文件
+          git add docs/.vitepress/notion-sync.json || true
+          git add docs/.vitepress/config.mjs || true
+
+          if git diff --quiet --cached; then
             echo "没有更改需要提交"
           else
-            git add docs/.vitepress/notion-sync.json
-            git commit -m "🔄 自动同步Notion内容 - $(date '+%Y-%m-%d %H:%M:%S')"
+            git commit -m "🔄 自动同步Notion内容和更新侧边栏 - $(date '+%Y-%m-%d %H:%M:%S')"
             git push
           fi
-      
-      - name: Trigger Pages Build
+
+      - name: Build site
         run: |
-          echo "🚀 触发GitHub Pages重新构建"
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/pages/builds
+          echo "🏗️ 开始构建站点..."
+          npm run docs:build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: success()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/.vitepress/dist

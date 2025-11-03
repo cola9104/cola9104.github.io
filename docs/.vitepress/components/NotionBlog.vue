@@ -152,7 +152,6 @@ export default {
         // 模拟API延迟
         await new Promise(resolve => setTimeout(resolve, 1000))
         
-        posts.value = mockPosts
         hasMore.value = false
       } catch (err) {
         error.value = err.message || '加载文章失败'

@@ -7,10 +7,14 @@ import fetch from 'node-fetch';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
-// 中间件
-app.use(cors());
+// 中间件 - 配置CORS以允许VitePress开发服务器访问
+app.use(cors({
+  origin: 'http://localhost:5173', // VitePress开发服务器地址
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 app.use(express.json());
 
 // Notion API配置

@@ -19,6 +19,9 @@
   },
   "dependencies": {
     "@notionhq/client": "^5.0.0",
-    "dotenv": "^17.2.2"
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2"
   }
 }
