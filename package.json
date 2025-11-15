@@ -1,21 +1,34 @@
 {
   "name": "cola9104_Blog",
   "version": "1.0.0",
-  "description": "",
+  "description": "Cola的网络安全博客 - 基于VitePress和Notion",
   "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "api:dev": "node api-server.js",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "lint": "eslint . --ext .js,.vue",
+    "lint:fix": "eslint . --ext .js,.vue --fix",
+    "format": "prettier --write \"**/*.{js,vue,json,md,yml,yaml}\""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "blog",
+    "vitepress",
+    "notion",
+    "cybersecurity",
+    "网络安全"
+  ],
+  "author": "cola9104",
+  "license": "MIT",
   "packageManager": "npm@10.0.0",
   "devDependencies": {
-    "vitepress": "^1.6.3"
+    "vitepress": "^1.6.3",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.20.0",
+    "prettier": "^3.2.4"
   },
   "dependencies": {
     "@notionhq/client": "^5.0.0",

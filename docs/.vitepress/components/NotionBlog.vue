@@ -77,27 +77,42 @@ export default {
     const loadPosts = async () => {
       loading.value = true
       error.value = null
-      
+
       try {
-        // 使用增强的Notion数据获取
-        const response = await fetch('https://api.notion.com/v1/databases/26822358-21c9-80de-bf43-cf8e6ff838d5/query', {
-          method: 'POST',
-          headers: {
-            'Authorization': 'Bearer ntn_Z91829129697EenwSBwmKQB1xdPOEjLK2i46iTzr9gf572',
-            'Content-Type': 'application/json',
-            'Notion-Version': '2022-06-28'
-          },
-          body: JSON.stringify({
-            page_size: 10
+        // 使用本地API服务器（开发环境）或从构建时生成的数据文件（生产环境）
+        const isDev = import.meta.env.DEV
+        let data
+
+        if (isDev) {
+          // 开发环境：调用本地API服务器
+          const response = await fetch('http://localhost:3000/api/posts', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
           })
-        })
-        
-        if (!response.ok) {
-          throw new Error(`Notion API Error: ${response.status}`)
+
+          if (!response.ok) {
+            throw new Error(`API Error: ${response.status}`)
+          }
+
+          data = await response.json()
+        } else {
+          // 生产环境：从构建时生成的静态数据文件读取
+          try {
+            const response = await fetch('/notion-data.json')
+            if (response.ok) {
+              data = await response.json()
+            } else {
+              // 降级：使用空数据
+              data = { results: [] }
+            }
+          } catch (err) {
+            console.warn('无法加载Notion数据文件，使用空数据', err)
+            data = { results: [] }
+          }
         }
-        
-        const data = await response.json()
-        
+
         // 处理Notion数据
         posts.value = data.results.map(page => {
           const title = page.properties['名称']?.title?.[0]?.text?.content || 'Untitled'

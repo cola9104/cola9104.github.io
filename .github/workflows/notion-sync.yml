@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-    - name: Create .env file
+      - name: Create .env file
         run: |
           cat > .env << EOF
           NOTION_TOKEN=${{ secrets.NOTION_TOKEN }}
@@ -41,7 +41,7 @@ jobs:
           NOTION_MAIN_PAGE_ID=${{ secrets.NOTION_MAIN_PAGE_ID }}
           EOF
 
-    - name: Verify environment variables
+      - name: Verify environment variables
         run: |
           echo "检查环境变量配置..."
           if [ -z "$NOTION_TOKEN" ]; then
@@ -63,7 +63,7 @@ jobs:
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
           NOTION_MAIN_PAGE_ID: ${{ secrets.NOTION_MAIN_PAGE_ID }}
 
-    - name: Sync Notion Content and Update Sidebar
+      - name: Sync Notion Content and Update Sidebar
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}

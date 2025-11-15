@@ -1,0 +1,7 @@
+node_modules
+dist
+.vitepress/dist
+.vitepress/cache
+*.md
+package-lock.json
+pnpm-lock.yaml

@@ -18,42 +18,49 @@ export default function enhanceClient(app, router) {
     async getHomepageData() {
       try {
         globalStore.loading = true
-        
+
         console.log('🔍 开始获取首页数据...')
-        console.log('🔑 Token:', (import.meta.env.NOTION_TOKEN || 'Bearer ntn_Z91829129697EenwSBwmKQB1xdPOEjLK2i46iTzr9gf572').substring(0, 10) + '...')
-        
-        // 调用Notion API获取首页数据
-        const databaseId = '2682235821c980debf43cf8e6ff838d5'; // 移除连字符的32位ID
-        const response = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
-          method: 'POST',
-          headers: {
-            'Authorization': (import.meta.env.NOTION_TOKEN || 'Bearer ntn_Z91829129697EenwSBwmKQB1xdPOEjLK2i46iTzr9gf572'),
-            'Content-Type': 'application/json',
-            'Notion-Version': '2022-06-28'
-          },
-          body: JSON.stringify({
-            page_size: 10
+
+        // 使用本地API服务器或静态数据文件
+        const isDev = import.meta.env.DEV
+        let data
+
+        if (isDev) {
+          // 开发环境：调用本地API服务器
+          const response = await fetch('http://localhost:3000/api/posts', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
           })
-        })
-        
-        console.log('📊 API响应状态:', response.status)
-        
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}))
-          throw new Error(`Notion API Error: ${response.status} - ${errorData.message || 'Unknown error'}`)
+
+          console.log('📊 API响应状态:', response.status)
+
+          if (!response.ok) {
+            throw new Error(`API Error: ${response.status}`)
+          }
+
+          data = await response.json()
+        } else {
+          // 生产环境：从构建时生成的静态数据文件读取
+          const response = await fetch('/notion-data.json').catch(() => null)
+          if (response && response.ok) {
+            data = await response.json()
+          } else {
+            data = { results: [] }
+          }
         }
-        
-        const data = await response.json()
+
         console.log('📋 获取到的数据数量:', data.results?.length || 0)
-        
+
         globalStore.notionData['home'] = data.results
         globalStore.lastUpdate = new Date()
-        
+
         console.log('✅ 首页数据更新成功')
         return data.results
       } catch (error) {
         console.error('❌ 获取首页数据失败:', error)
-        return null
+        return []
       } finally {
         globalStore.loading = false
       }
@@ -63,42 +70,48 @@ export default function enhanceClient(app, router) {
     async getPageData(path) {
       try {
         globalStore.loading = true
-        
-        // 从路径提取页面标题
-        const pageTitle = path.split('/').filter(Boolean).pop()
-        
-        // 调用Notion API查询对应页面
-        const databaseId = '2682235821c980debf43cf8e6ff838d5'; // 移除连字符的32位ID
-        const response = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
-          method: 'POST',
-          headers: {
-            'Authorization': (import.meta.env.NOTION_TOKEN || 'Bearer ntn_Z91829129697EenwSBwmKQB1xdPOEjLK2i46iTzr9gf572'),
-            'Content-Type': 'application/json',
-            'Notion-Version': '2022-06-28'
-          },
-          body: JSON.stringify({
-            filter: {
-              property: '名称',
-              title: {
-                contains: pageTitle
-              }
+
+        // 使用本地API服务器或静态数据文件
+        const isDev = import.meta.env.DEV
+        let data
+
+        if (isDev) {
+          // 从路径提取页面标题
+          const pageTitle = path.split('/').filter(Boolean).pop()
+
+          // 调用本地API服务器
+          const response = await fetch(`http://localhost:3000/api/page?title=${encodeURIComponent(pageTitle)}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
             }
           })
-        })
-        
-        if (!response.ok) {
-          throw new Error(`Notion API Error: ${response.status}`)
+
+          if (!response.ok) {
+            throw new Error(`API Error: ${response.status}`)
+          }
+
+          data = await response.json()
+        } else {
+          // 生产环境：从静态数据读取
+          const response = await fetch('/notion-data.json').catch(() => null)
+          if (response && response.ok) {
+            const allData = await response.json()
+            // 根据路径过滤数据
+            data = { results: allData.results || [] }
+          } else {
+            data = { results: [] }
+          }
         }
-        
-        const data = await response.json()
+
         globalStore.notionData[path] = data.results
         globalStore.lastUpdate = new Date()
-        
+
         console.log(`✅ 页面数据更新成功: ${path}`)
         return data.results
       } catch (error) {
         console.error(`❌ 获取页面数据失败: ${path}`, error)
-        return null
+        return []
       } finally {
         globalStore.loading = false
       }
@@ -108,48 +121,50 @@ export default function enhanceClient(app, router) {
     async getCategoryData(category) {
       try {
         globalStore.loading = true
-        
-        const databaseId = '2682235821c980debf43cf8e6ff838d5'; // 移除连字符的32位ID
-        const response = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
-          method: 'POST',
-          headers: {
-            'Authorization': (import.meta.env.NOTION_TOKEN || 'Bearer ntn_Z91829129697EenwSBwmKQB1xdPOEjLK2i46iTzr9gf572'),
-            'Content-Type': 'application/json',
-            'Notion-Version': '2022-06-28'
-          },
-          body: JSON.stringify({
-            filter: {
-              or: [
-                {
-                  property: '名称',
-                  title: {
-                    contains: category
-                  }
-                },
-                {
-                  property: '文本',
-                  rich_text: {
-                    contains: category
-                  }
-                }
-              ]
+
+        // 使用本地API服务器或静态数据文件
+        const isDev = import.meta.env.DEV
+        let data
+
+        if (isDev) {
+          // 调用本地API服务器
+          const response = await fetch(`http://localhost:3000/api/category?name=${encodeURIComponent(category)}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
             }
           })
-        })
-        
-        if (!response.ok) {
-          throw new Error(`Notion API Error: ${response.status}`)
+
+          if (!response.ok) {
+            throw new Error(`API Error: ${response.status}`)
+          }
+
+          data = await response.json()
+        } else {
+          // 生产环境：从静态数据读取并过滤
+          const response = await fetch('/notion-data.json').catch(() => null)
+          if (response && response.ok) {
+            const allData = await response.json()
+            // 根据分类过滤数据
+            const filtered = (allData.results || []).filter(item => {
+              const title = item.properties?.['名称']?.title?.[0]?.text?.content || ''
+              const text = item.properties?.['文本']?.rich_text?.[0]?.text?.content || ''
+              return title.includes(category) || text.includes(category)
+            })
+            data = { results: filtered }
+          } else {
+            data = { results: [] }
+          }
         }
-        
-        const data = await response.json()
+
         globalStore.notionData['category_' + category] = data.results
         globalStore.lastUpdate = new Date()
-        
+
         console.log(`✅ 分类数据更新成功: ${category}`)
         return data.results
       } catch (error) {
         console.error(`❌ 获取分类数据失败: ${category}`, error)
-        return null
+        return []
       } finally {
         globalStore.loading = false
       }
