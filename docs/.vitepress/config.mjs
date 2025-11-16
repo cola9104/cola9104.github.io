@@ -46,6 +46,18 @@ export default defineConfig(async () => {
         { text: '渗透测试', link: '/渗透测试/' },
         { text: '漏洞分析', link: '/漏洞分析/' },
         { text: '嵌入式安全', link: '/嵌入式安全/' },
+        { text: 'CTF竞赛', link: '/CTF竞赛/' },
+        {
+          text: 'Notion 内容',
+          items: [
+            { text: '网络安全', link: '/notion-pages/网络安全' },
+            { text: '渗透测试', link: '/notion-pages/渗透测试' },
+            { text: '嵌入式安全', link: '/notion-pages/嵌入式安全' },
+            { text: 'CTF竞赛', link: '/notion-pages/ctf竞赛' },
+            { text: '编程技术', link: '/notion-pages/编程技术' },
+            { text: '漏洞分析', link: '/notion-pages/漏洞分析' }
+          ]
+        },
         { text: '关于', link: '/关于/' }
       ],
 
