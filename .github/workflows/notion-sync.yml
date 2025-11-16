@@ -233,14 +233,5 @@ jobs:
             git push
           fi
 
-      - name: Build site
-        run: |
-          echo "🏗️ 开始构建站点..."
-          npm run docs:build
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: success()
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/.vitepress/dist
+      # 部署由 deploy.yml 工作流自动处理
+      # 当内容被推送后，deploy.yml 会自动触发构建和部署

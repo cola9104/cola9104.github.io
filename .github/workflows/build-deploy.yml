@@ -4,9 +4,9 @@ on:
   # 手动触发
   workflow_dispatch:
 
-  # 推送时触发
-  push:
-    branches: [ main ]
+  # 推送时触发 - 已禁用，使用 deploy.yml 代替
+  # push:
+  #   branches: [ main ]
 
 # 设置 GITHUB_TOKEN 的权限
 permissions:
