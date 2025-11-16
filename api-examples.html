@@ -3,81 +3,25 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Runtime API Examples | cola_Blog</title>
-    <meta name="description" content="cola 的技术博客">
-    <meta name="generator" content="VitePress v1.6.3">
-    <link rel="preload stylesheet" href="/assets/style.D0UuhuWs.css" as="style">
+    <title>Runtime API Examples | Cola的网络安全博客</title>
+    <meta name="description" content="专注于网络安全、渗透测试、漏洞分析的技术博客">
+    <meta name="generator" content="VitePress v1.6.4">
+    <link rel="preload stylesheet" href="/assets/style.BCRMiko3.css" as="style">
     <link rel="preload stylesheet" href="/vp-icons.css" as="style">
     
-    <script type="module" src="/assets/app.CRGbCIrD.js"></script>
-    <link rel="preload" href="/assets/inter-roman-latin.Di8DUHzh.woff2" as="font" type="font/woff2" crossorigin="">
-    <link rel="modulepreload" href="/assets/chunks/theme.Ba9Ix2G9.js">
-    <link rel="modulepreload" href="/assets/chunks/framework.BtEkjhVd.js">
-    <link rel="modulepreload" href="/assets/api-examples.md.CZgeTbws.lean.js">
+    <script type="module" src="/assets/app.TaUR0WRH.js"></script>
+    <link rel="modulepreload" href="/assets/chunks/theme.D9k17K7B.js">
+    <link rel="modulepreload" href="/assets/chunks/framework.CUAc3UZn.js">
+    <link rel="modulepreload" href="/assets/api-examples.md.BkR84MAw.lean.js">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="keywords" content="网络安全,渗透测试,漏洞分析,信息安全,CTF">
+    <link rel="stylesheet" href="/theme/blog.css">
     <script id="check-dark-mode">(()=>{const e=localStorage.getItem("vitepress-theme-appearance")||"auto",a=window.matchMedia("(prefers-color-scheme: dark)").matches;(!e||e==="auto"?a:e==="dark")&&document.documentElement.classList.add("dark")})();</script>
     <script id="check-mac-os">document.documentElement.classList.toggle("mac",/Mac|iPhone|iPod|iPad/i.test(navigator.platform));</script>
   </head>
   <body>
-    <div id="app"><div class="Layout" data-v-32e39dcf><!--[--><!--]--><!--[--><span tabindex="-1" data-v-b340c8f7></span><a href="#VPContent" class="VPSkipLink visually-hidden" data-v-b340c8f7>Skip to content</a><!--]--><!----><header class="VPNav" data-v-32e39dcf data-v-298a4f5a><div class="VPNavBar" data-v-298a4f5a data-v-883acc06><div class="wrapper" data-v-883acc06><div class="container" data-v-883acc06><div class="title" data-v-883acc06><div class="VPNavBarTitle has-sidebar" data-v-883acc06 data-v-64c800ee><a class="title" href="/" data-v-64c800ee><!--[--><!--]--><!----><span data-v-64c800ee>cola_Blog</span><!--[--><!--]--></a></div></div><div class="content" data-v-883acc06><div class="content-body" data-v-883acc06><!--[--><!--]--><div class="VPNavBarSearch search" data-v-883acc06><!----></div><nav aria-labelledby="main-nav-aria-label" class="VPNavBarMenu menu" data-v-883acc06 data-v-0d30a5d7><span id="main-nav-aria-label" class="visually-hidden" data-v-0d30a5d7> Main Navigation </span><!--[--><!--[--><a class="VPLink link VPNavBarMenuLink" href="/" tabindex="0" data-v-0d30a5d7 data-v-fa9a032b><!--[--><span data-v-fa9a032b>Home</span><!--]--></a><!--]--><!--[--><a class="VPLink link VPNavBarMenuLink" href="/markdown-examples.html" tabindex="0" data-v-0d30a5d7 data-v-fa9a032b><!--[--><span data-v-fa9a032b>Examples</span><!--]--></a><!--]--><!--]--></nav><!----><div class="VPNavBarAppearance appearance" data-v-883acc06 data-v-be3201b0><button class="VPSwitch VPSwitchAppearance" type="button" role="switch" title aria-checked="false" data-v-be3201b0 data-v-23920a8f data-v-222e4e54><span class="check" data-v-222e4e54><span class="icon" data-v-222e4e54><!--[--><span class="vpi-sun sun" data-v-23920a8f></span><span class="vpi-moon moon" data-v-23920a8f></span><!--]--></span></span></button></div><div class="VPSocialLinks VPNavBarSocialLinks social-links" data-v-883acc06 data-v-ab7c40f2 data-v-5480e48c><!--[--><a class="VPSocialLink no-icon" href="https://github.com/vuejs/vitepress" aria-label="github" target="_blank" rel="noopener" data-v-5480e48c data-v-1dcf205f><span class="vpi-social-github"></span></a><!--]--></div><div class="VPFlyout VPNavBarExtra extra" data-v-883acc06 data-v-b0498f15 data-v-f1032559><button type="button" class="button" aria-haspopup="true" aria-expanded="false" aria-label="extra navigation" data-v-f1032559><span class="vpi-more-horizontal icon" data-v-f1032559></span></button><div class="menu" data-v-f1032559><div class="VPMenu" data-v-f1032559 data-v-2c3610af><!----><!--[--><!--[--><!----><div class="group" data-v-b0498f15><div class="item appearance" data-v-b0498f15><p class="label" data-v-b0498f15>Appearance</p><div class="appearance-action" data-v-b0498f15><button class="VPSwitch VPSwitchAppearance" type="button" role="switch" title aria-checked="false" data-v-b0498f15 data-v-23920a8f data-v-222e4e54><span class="check" data-v-222e4e54><span class="icon" data-v-222e4e54><!--[--><span class="vpi-sun sun" data-v-23920a8f></span><span class="vpi-moon moon" data-v-23920a8f></span><!--]--></span></span></button></div></div></div><div class="group" data-v-b0498f15><div class="item social-links" data-v-b0498f15><div class="VPSocialLinks social-links-list" data-v-b0498f15 data-v-5480e48c><!--[--><a class="VPSocialLink no-icon" href="https://github.com/vuejs/vitepress" aria-label="github" target="_blank" rel="noopener" data-v-5480e48c data-v-1dcf205f><span class="vpi-social-github"></span></a><!--]--></div></div></div><!--]--><!--]--></div></div></div><!--[--><!--]--><button type="button" class="VPNavBarHamburger hamburger" aria-label="mobile navigation" aria-expanded="false" aria-controls="VPNavScreen" data-v-883acc06 data-v-41ff4f54><span class="container" data-v-41ff4f54><span class="top" data-v-41ff4f54></span><span class="middle" data-v-41ff4f54></span><span class="bottom" data-v-41ff4f54></span></span></button></div></div></div></div><div class="divider" data-v-883acc06><div class="divider-line" data-v-883acc06></div></div></div><!----></header><div class="VPLocalNav has-sidebar empty" data-v-32e39dcf data-v-14b7a3aa><div class="container" data-v-14b7a3aa><button class="menu" aria-expanded="false" aria-controls="VPSidebarNav" data-v-14b7a3aa><span class="vpi-align-left menu-icon" data-v-14b7a3aa></span><span class="menu-text" data-v-14b7a3aa>Menu</span></button><div class="VPLocalNavOutlineDropdown" style="--vp-vh:0px;" data-v-14b7a3aa data-v-cd011971><button data-v-cd011971>Return to top</button><!----></div></div></div><aside class="VPSidebar" data-v-32e39dcf data-v-7f452ddf><div class="curtain" data-v-7f452ddf></div><nav class="nav" id="VPSidebarNav" aria-labelledby="sidebar-aria-label" tabindex="-1" data-v-7f452ddf><span class="visually-hidden" id="sidebar-aria-label" data-v-7f452ddf> Sidebar Navigation </span><!--[--><!--]--><!--[--><div class="no-transition group" data-v-a7d3a93e><section class="VPSidebarItem level-0 has-active" data-v-a7d3a93e data-v-48f9c2c2><div class="item" role="button" tabindex="0" data-v-48f9c2c2><div class="indicator" data-v-48f9c2c2></div><h2 class="text" data-v-48f9c2c2>Examples</h2><!----></div><div class="items" data-v-48f9c2c2><!--[--><div class="VPSidebarItem level-1 is-link" data-v-48f9c2c2 data-v-48f9c2c2><div class="item" data-v-48f9c2c2><div class="indicator" data-v-48f9c2c2></div><a class="VPLink link link" href="/markdown-examples.html" data-v-48f9c2c2><!--[--><p class="text" data-v-48f9c2c2>Markdown Examples</p><!--]--></a><!----></div><!----></div><div class="VPSidebarItem level-1 is-link" data-v-48f9c2c2 data-v-48f9c2c2><div class="item" data-v-48f9c2c2><div class="indicator" data-v-48f9c2c2></div><a class="VPLink link link" href="/api-examples.html" data-v-48f9c2c2><!--[--><p class="text" data-v-48f9c2c2>Runtime API Examples</p><!--]--></a><!----></div><!----></div><!--]--></div></section></div><!--]--><!--[--><!--]--></nav></aside><div class="VPContent has-sidebar" id="VPContent" data-v-32e39dcf data-v-82c0ecc6><div class="VPDoc has-sidebar has-aside" data-v-82c0ecc6 data-v-06ef2308><!--[--><!--]--><div class="container" data-v-06ef2308><div class="aside" data-v-06ef2308><div class="aside-curtain" data-v-06ef2308></div><div class="aside-container" data-v-06ef2308><div class="aside-content" data-v-06ef2308><div class="VPDocAside" data-v-06ef2308 data-v-75b22be8><!--[--><!--]--><!--[--><!--]--><nav aria-labelledby="doc-outline-aria-label" class="VPDocAsideOutline" data-v-75b22be8 data-v-a2152973><div class="content" data-v-a2152973><div class="outline-marker" data-v-a2152973></div><div aria-level="2" class="outline-title" id="doc-outline-aria-label" role="heading" data-v-a2152973>On this page</div><ul class="VPDocOutlineItem root" data-v-a2152973 data-v-80416021><!--[--><!--]--></ul></div></nav><!--[--><!--]--><div class="spacer" data-v-75b22be8></div><!--[--><!--]--><!----><!--[--><!--]--><!--[--><!--]--></div></div></div></div><div class="content" data-v-06ef2308><div class="content-container" data-v-06ef2308><!--[--><!--]--><main class="main" data-v-06ef2308><div style="position:relative;" class="vp-doc _api-examples" data-v-06ef2308><div><h1 id="runtime-api-examples" tabindex="-1">Runtime API Examples <a class="header-anchor" href="#runtime-api-examples" aria-label="Permalink to &quot;Runtime API Examples&quot;">​</a></h1><p>This page demonstrates usage of some of the runtime APIs provided by VitePress.</p><p>The main <code>useData()</code> API can be used to access site, theme, and page data for the current page. It works in both <code>.md</code> and <code>.vue</code> files:</p><div class="language-md vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">md</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&lt;script setup&gt;</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">import { useData } from &#39;vitepress&#39;</span></span>
-<span class="line"></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">const { theme, page, frontmatter } = useData()</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&lt;/script&gt;</span></span>
-<span class="line"></span>
-<span class="line"><span style="--shiki-light:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold;">## Results</span></span>
-<span class="line"></span>
-<span class="line"><span style="--shiki-light:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold;">### Theme Data</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&lt;pre&gt;{{ theme }}&lt;/pre&gt;</span></span>
-<span class="line"></span>
-<span class="line"><span style="--shiki-light:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold;">### Page Data</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&lt;pre&gt;{{ page }}&lt;/pre&gt;</span></span>
-<span class="line"></span>
-<span class="line"><span style="--shiki-light:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold;">### Page Frontmatter</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&lt;pre&gt;{{ frontmatter }}&lt;/pre&gt;</span></span></code></pre></div><h2 id="results" tabindex="-1">Results <a class="header-anchor" href="#results" aria-label="Permalink to &quot;Results&quot;">​</a></h2><h3 id="theme-data" tabindex="-1">Theme Data <a class="header-anchor" href="#theme-data" aria-label="Permalink to &quot;Theme Data&quot;">​</a></h3><pre>{
-  &quot;nav&quot;: [
-    {
-      &quot;text&quot;: &quot;Home&quot;,
-      &quot;link&quot;: &quot;/&quot;
-    },
-    {
-      &quot;text&quot;: &quot;Examples&quot;,
-      &quot;link&quot;: &quot;/markdown-examples&quot;
-    }
-  ],
-  &quot;sidebar&quot;: [
-    {
-      &quot;text&quot;: &quot;Examples&quot;,
-      &quot;items&quot;: [
-        {
-          &quot;text&quot;: &quot;Markdown Examples&quot;,
-          &quot;link&quot;: &quot;/markdown-examples&quot;
-        },
-        {
-          &quot;text&quot;: &quot;Runtime API Examples&quot;,
-          &quot;link&quot;: &quot;/api-examples&quot;
-        }
-      ]
-    }
-  ],
-  &quot;socialLinks&quot;: [
-    {
-      &quot;icon&quot;: &quot;github&quot;,
-      &quot;link&quot;: &quot;https://github.com/vuejs/vitepress&quot;
-    }
-  ]
-}</pre><h3 id="page-data" tabindex="-1">Page Data <a class="header-anchor" href="#page-data" aria-label="Permalink to &quot;Page Data&quot;">​</a></h3><pre>{
-  &quot;title&quot;: &quot;Runtime API Examples&quot;,
-  &quot;description&quot;: &quot;&quot;,
-  &quot;frontmatter&quot;: {
-    &quot;outline&quot;: &quot;deep&quot;
-  },
-  &quot;headers&quot;: [],
-  &quot;relativePath&quot;: &quot;api-examples.md&quot;,
-  &quot;filePath&quot;: &quot;api-examples.md&quot;
-}</pre><h3 id="page-frontmatter" tabindex="-1">Page Frontmatter <a class="header-anchor" href="#page-frontmatter" aria-label="Permalink to &quot;Page Frontmatter&quot;">​</a></h3><pre>{
-  &quot;outline&quot;: &quot;deep&quot;
-}</pre><h2 id="more" tabindex="-1">More <a class="header-anchor" href="#more" aria-label="Permalink to &quot;More&quot;">​</a></h2><p>Check out the documentation for the <a href="https://vitepress.dev/reference/runtime-api#usedata" target="_blank" rel="noreferrer">full list of runtime APIs</a>.</p></div></div></main><footer class="VPDocFooter" data-v-06ef2308 data-v-c461bbcf><!--[--><!--]--><!----><nav class="prev-next" aria-labelledby="doc-footer-aria-label" data-v-c461bbcf><span class="visually-hidden" id="doc-footer-aria-label" data-v-c461bbcf>Pager</span><div class="pager" data-v-c461bbcf><a class="VPLink link pager-link prev" href="/markdown-examples.html" data-v-c461bbcf><!--[--><span class="desc" data-v-c461bbcf>Previous page</span><span class="title" data-v-c461bbcf>Markdown Examples</span><!--]--></a></div><div class="pager" data-v-c461bbcf><!----></div></nav></footer><!--[--><!--]--></div></div></div><!--[--><!--]--></div></div><!----><!--[--><!--]--></div></div>
-    <script>window.__VP_HASH_MAP__=JSON.parse("{\"api-examples.md\":\"CZgeTbws\",\"index.md\":\"CkXNqiuH\",\"markdown-examples.md\":\"CwYj59h0\"}");window.__VP_SITE_DATA__=JSON.parse("{\"lang\":\"en-US\",\"dir\":\"ltr\",\"title\":\"cola_Blog\",\"description\":\"cola 的技术博客\",\"base\":\"/\",\"head\":[],\"router\":{\"prefetchLinks\":true},\"appearance\":true,\"themeConfig\":{\"nav\":[{\"text\":\"Home\",\"link\":\"/\"},{\"text\":\"Examples\",\"link\":\"/markdown-examples\"}],\"sidebar\":[{\"text\":\"Examples\",\"items\":[{\"text\":\"Markdown Examples\",\"link\":\"/markdown-examples\"},{\"text\":\"Runtime API Examples\",\"link\":\"/api-examples\"}]}],\"socialLinks\":[{\"icon\":\"github\",\"link\":\"https://github.com/vuejs/vitepress\"}]},\"locales\":{},\"scrollOffset\":134,\"cleanUrls\":false}");</script>
+    <div id="app"><!----></div>
+    <script>window.__VP_HASH_MAP__=JSON.parse("{\"api-examples.md\":\"BkR84MAw\",\"ctf竞赛_index.md\":\"CmHKuDZz\",\"index.md\":\"DXm4bdFH\",\"markdown-examples.md\":\"Blw4DJgm\",\"notion-content.md\":\"CBLGCy3K\",\"notion-debug.md\":\"CTOe-M9Q\",\"notion-sync-log.md\":\"DcF5CS3h\",\"test-notion-data.md\":\"B7xpzgu6\",\"关于_index.md\":\"Bib7JwdF\",\"嵌入式安全_index.md\":\"CSDZUEZT\",\"渗透测试_index.md\":\"wgIBdIn4\",\"漏洞分析_index.md\":\"Dna6SSjz\",\"网络安全_index.md\":\"b59K5Ou2\",\"网络安全_威胁情报_index.md\":\"bFWV9icy\",\"网络安全_安全运营中心_index.md\":\"DT1vx4oj\",\"网络安全_常见攻击类型_index.md\":\"Bc_e13pw\",\"网络安全_网络安全概述_index.md\":\"CsFYl7OC\",\"网络安全_防护策略_index.md\":\"DoXwpjJx\",\"网络安全_零信任架构_index.md\":\"DMEq5jWa\"}");window.__VP_SITE_DATA__=JSON.parse("{\"lang\":\"en-US\",\"dir\":\"ltr\",\"title\":\"Cola的网络安全博客\",\"description\":\"专注于网络安全、渗透测试、漏洞分析的技术博客\",\"base\":\"/\",\"head\":[],\"router\":{\"prefetchLinks\":true},\"appearance\":true,\"themeConfig\":{\"siteTitle\":\"Cola的网络安全博客\",\"nav\":[{\"text\":\"首页\",\"link\":\"/\"},{\"text\":\"网络安全\",\"link\":\"/网络安全/\"},{\"text\":\"渗透测试\",\"link\":\"/渗透测试/\"},{\"text\":\"漏洞分析\",\"link\":\"/漏洞分析/\"},{\"text\":\"嵌入式安全\",\"link\":\"/嵌入式安全/\"},{\"text\":\"关于\",\"link\":\"/关于/\"}],\"sidebar\":{\"/网络安全/\":[{\"text\":\"网络安全\",\"items\":[{\"text\":\"网络安全概述\",\"link\":\"/网络安全/\"}]}],\"/渗透测试/\":[{\"text\":\"渗透测试\",\"items\":[{\"text\":\"渗透测试流程\",\"link\":\"/渗透测试/渗透测试流程/\"},{\"text\":\"渗透测试基础\",\"link\":\"/渗透测试/渗透测试基础/\"},{\"text\":\"信息收集\",\"link\":\"/渗透测试/信息收集/\"},{\"text\":\"漏洞扫描\",\"link\":\"/渗透测试/漏洞扫描/\"}]}]},\"socialLinks\":[{\"icon\":\"github\",\"link\":\"https://github.com/cola9104\"}],\"search\":{\"provider\":\"local\"},\"footer\":{\"message\":\"基于 MIT 许可发布\",\"copyright\":\"版权所有 © 2024-2025 Cola\"}},\"locales\":{},\"scrollOffset\":134,\"cleanUrls\":false}");</script>
     
   </body>
 </html>
