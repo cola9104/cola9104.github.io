@@ -8,19 +8,20 @@ const __dirname = path.dirname(__filename)
 
 // 使用defineConfig的回调形式，支持异步操作
 export default defineConfig(async () => {
-  // 在构建时更新首页特性（开发环境下不执行）
-  if (process.env.NODE_ENV === 'production') {
-    try {
+  let runUpdate
+
+  try {
+    const updateModule = await import(path.resolve(__dirname, '../../update-homepage-features.js'))
+    runUpdate = updateModule.default
+
+    // 在构建时更新首页特性（开发环境下不执行）
+    if (runUpdate && process.env.NODE_ENV !== 'development') {
       console.log('🚀 正在更新首页特性数据...')
-      const updateModule = await import(path.resolve(__dirname, '../../update-homepage-features.js'))
-      const runUpdate = updateModule.default
-      if (runUpdate) {
-        await runUpdate()
-      }
-    } catch (error) {
-      console.log('⚠️ 无法导入update-homepage-features.js，将跳过首页特性更新')
-      console.log('错误信息:', error.message)
+      await runUpdate()
     }
+  } catch (error) {
+    console.log('⚠️ 无法导入update-homepage-features.js，将跳过首页特性更新')
+    console.log('错误信息:', error.message)
   }
 
   return {
@@ -45,18 +46,6 @@ export default defineConfig(async () => {
         { text: '渗透测试', link: '/渗透测试/' },
         { text: '漏洞分析', link: '/漏洞分析/' },
         { text: '嵌入式安全', link: '/嵌入式安全/' },
-        { text: 'CTF竞赛', link: '/CTF竞赛/' },
-        {
-          text: 'Notion 内容',
-          items: [
-            { text: '网络安全', link: '/notion-pages/网络安全' },
-            { text: '渗透测试', link: '/notion-pages/渗透测试' },
-            { text: '嵌入式安全', link: '/notion-pages/嵌入式安全' },
-            { text: 'CTF竞赛', link: '/notion-pages/ctf竞赛' },
-            { text: '编程技术', link: '/notion-pages/编程技术' },
-            { text: '漏洞分析', link: '/notion-pages/漏洞分析' }
-          ]
-        },
         { text: '关于', link: '/关于/' }
       ],
 
