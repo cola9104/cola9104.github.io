@@ -1,0 +1,32 @@
+{
+  "syncTime": "2025-11-18T02:43:36.894Z",
+  "totalCategories": 5,
+  "totalPages": 10,
+  "categories": [
+    {
+      "title": "网络安全",
+      "path": "/网络安全/",
+      "pageCount": 6
+    },
+    {
+      "title": "渗透测试",
+      "path": "/渗透测试/",
+      "pageCount": 4
+    },
+    {
+      "title": "漏洞分析",
+      "path": "/漏洞分析/",
+      "pageCount": 0
+    },
+    {
+      "title": "嵌入式安全",
+      "path": "/嵌入式安全/",
+      "pageCount": 0
+    },
+    {
+      "title": "CTF",
+      "path": "/CTF/",
+      "pageCount": 0
+    }
+  ]
+}

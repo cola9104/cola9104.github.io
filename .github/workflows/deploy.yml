@@ -42,10 +42,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Sync Notion content
+        run: node sync-all-notion-pages.js
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_MAIN_PAGE_ID: ${{ secrets.NOTION_MAIN_PAGE_ID }}
+
       - name: Build with VitePress
         run: npm run docs:build
         env:
           NODE_ENV: production
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_MAIN_PAGE_ID: ${{ secrets.NOTION_MAIN_PAGE_ID }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
