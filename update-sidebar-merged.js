@@ -218,14 +218,40 @@ async function updateMergedSidebarConfig() {
     // 3. 读取当前配置文件
     let configContent = fs.readFileSync(CONFIG_FILE_PATH, 'utf-8');
 
-    // 4. 生成侧边栏配置的JavaScript代码
+    // 4. 生成侧边栏配置的JavaScript代码（带正确缩进）
+    const sidebarJSON = JSON.stringify(sidebarConfig, null, 2)
+      .split('\n')
+      .map((line, index) => index === 0 ? line : '      ' + line)
+      .join('\n');
+
     const sidebarConfigString = `// 侧边栏（网络安全页面已合并）
-sidebar: ${JSON.stringify(sidebarConfig, null, 4)}`;
+      sidebar: ${sidebarJSON}`;
 
     // 5. 查找并替换现有的侧边栏配置
-    const sidebarRegex = /\/\/\s*侧边栏.*?\n\s*sidebar:\s*{[^}]*}/s;
-    if (sidebarRegex.test(configContent)) {
-      configContent = configContent.replace(sidebarRegex, sidebarConfigString);
+    // 使用更智能的方式查找 sidebar 配置块
+    const sidebarStartRegex = /\/\/\s*侧边栏.*?\n\s*sidebar:\s*{/s;
+    const startMatch = configContent.match(sidebarStartRegex);
+
+    if (startMatch) {
+      const startIndex = startMatch.index;
+      const startPos = startIndex + startMatch[0].length - 1; // -1 因为我们要包含第一个 {
+
+      // 从 sidebar: { 开始，找到匹配的闭合括号
+      let braceCount = 0;
+      let endPos = startPos;
+      for (let i = startPos; i < configContent.length; i++) {
+        if (configContent[i] === '{') braceCount++;
+        if (configContent[i] === '}') braceCount--;
+        if (braceCount === 0) {
+          endPos = i + 1;
+          break;
+        }
+      }
+
+      // 替换整个 sidebar 配置块
+      const before = configContent.substring(0, startIndex);
+      const after = configContent.substring(endPos);
+      configContent = before + sidebarConfigString + after;
     } else {
       // 如果没有找到侧边栏配置，在themeConfig中添加
       const themeConfigRegex = /themeConfig:\s*{/;
