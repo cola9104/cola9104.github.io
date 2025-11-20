@@ -34,7 +34,9 @@ export default defineConfig(async () => {
     ],
 
     // 主题配置
-    themeConfig: {
+      themeConfig: {
+        // 禁用页面内目录导航（On this page）
+        outline: false,
       // 网站信息
       siteTitle: 'Cola的网络安全博客',
 
@@ -62,6 +64,8 @@ export default defineConfig(async () => {
 
       // 侧边栏（网络安全页面已合并）
       sidebar: {
+        // 首页不显示侧边栏
+        "/": [],
         "/渗透测试/": [
           {
             "text": "渗透测试",
