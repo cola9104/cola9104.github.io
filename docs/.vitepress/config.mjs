@@ -64,8 +64,6 @@ export default defineConfig(async () => {
 
       // 侧边栏（网络安全页面已合并）
       sidebar: {
-        // 首页不显示侧边栏
-        "/": [],
         "/渗透测试/": [
           {
             "text": "渗透测试",
