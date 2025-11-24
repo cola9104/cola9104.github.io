@@ -117,6 +117,17 @@ export default defineConfig(async () => {
             ]
           }
         ],
+        "/CTF/": [
+          {
+            "text": "CTF",
+            "items": [
+              {
+                "text": "CTF1",
+                "link": "/CTF/CTF1/"
+              }
+            ]
+          }
+        ],
         "/网络安全/": [
           {
             "text": "网络安全",
