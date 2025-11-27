@@ -75,6 +75,15 @@ app.get('/api/notion/posts', async (req, res) => {
 
   } catch (error) {
     console.error('❌ 获取文章失败:', error.message);
+    console.error('❌ 详细错误:', error);
+      
+      // 检查错误类型
+      if (error.code === 'ETIMEDOUT') {
+        console.error('❌ 超时错误: 网络连接问题或API响应超时');
+      } else if (error.response) {
+        console.error('❌ 响应状态:', error.response.status);
+        console.error('❌ 响应数据:', error.response.data);
+      }
     res.status(500).json({
       success: false,
       error: error.message,

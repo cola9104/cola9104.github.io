@@ -12,87 +12,12 @@ if (NOTION_TOKEN && !NOTION_TOKEN.startsWith('Bearer ')) {
   console.warn('⚠️ NOTION_TOKEN应该以"Bearer "开头');
 }
 
-// 修改fetchDatabaseData函数，添加更详细的调试信息
-async function fetchDatabaseData() {
-  try {
-    console.log('🔍 正在调用Notion数据库API...');
-    console.log(`API URL: https://api.notion.com/v1/databases/${NOTION_FEATURES_DATABASE_ID}/query`);
-    
-    const response = await fetch(`https://api.notion.com/v1/databases/${NOTION_FEATURES_DATABASE_ID}/query`, {
-      method: 'POST',
-      headers: {
-        'Authorization': NOTION_TOKEN,
-        'Content-Type': 'application/json',
-        'Notion-Version': '2022-06-28'
-      },
-      body: JSON.stringify({
-        sorts: [{
-          property: 'order',
-          direction: 'ascending'
-        }]
-      })
-    });
-
-    if (!response.ok) {
-      console.error(`❌ API响应状态码: ${response.status}`);
-      console.error(`❌ API响应状态文本: ${response.statusText}`);
-      // 尝试获取更多错误信息
-      try {
-        const errorData = await response.json();
-        console.error('❌ API错误详情:', errorData);
-      } catch (e) {
-        console.error('❌ 无法解析API错误响应');
-      }
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    console.log(`📄 从数据库获取到 ${data.results.length} 条特性数据`);
-    
-    // 处理数据库记录
-    const features = data.results.map(page => {
-      const properties = page.properties;
-      
-      // 提取基本信息
-      const title = extractTextFromRichText(properties.title?.title || properties.Name?.title);
-      const description = extractTextFromRichText(properties.description?.rich_text || properties.Description?.rich_text);
-      const link = extractTextFromRichText(properties.link?.rich_text || properties.Link?.rich_text);
-      const icon = extractIcon(properties.icon?.select?.name || '📄');
-      
-      // 如果缺少必要信息，使用默认值
-      if (!title) {
-        console.warn('⚠️ 特性缺少标题，跳过');
-        return null;
-      }
-      
-      // 获取最终链接，优先使用特殊映射
-      const finalLink = SPECIAL_LINK_MAPPING[title] || link || `/${generateSlug(title)}/`;
-      // 获取最终描述
-      const finalDescription = description || `探索${title}的相关内容和技术分享`;
-      
-      return {
-        icon,
-        title,
-        details: finalDescription,
-        link: finalLink
-      };
-    }).filter(Boolean); // 过滤掉null值
-    
-    return features;
-  } catch (error) {
-    console.error('❌ 从数据库获取数据失败:', error.message);
-    // 回退到从父页面获取
-    return getFeaturesFromParentPage();
-  }
-}
-
-/**
- * 从父页面获取子页面作为特性
- */
+// 从父页面获取子页面作为特性
 async function getFeaturesFromParentPage() {
   try {
     // 获取父页面的所有子页面
-    const parentBlocks = await getPageBlocks(NOTION_FEATURES_DATABASE_ID);
+    const homepageId = process.env.NOTION_MAIN_PAGE_ID || '26822358-21c9-80f5-b1d1-cc8fedd541b6';
+    const parentBlocks = await getPageBlocks(homepageId);
     const childPages = parentBlocks.filter(block => block.type === 'child_page');
     
     console.log(`📄 找到 ${childPages.length} 个顶级子页面`);
@@ -182,61 +107,11 @@ function getDefaultDescription(title) {
  */
 async function getFeaturesFromDatabase() {
   try {
-    console.log(`🔍 正在尝试从数据库获取数据，使用的数据库ID: ${NOTION_FEATURES_DATABASE_ID}`);
-    
-    // 验证数据库ID格式
-    if (!validateDatabaseId(NOTION_FEATURES_DATABASE_ID)) {
-      console.error('❌ 数据库ID格式无效，请检查配置');
-      return [];
-    }
-
-    const data = await fetchDatabaseData();
-    if (!data || !data.results || data.results.length === 0) {
-      console.log('📭 数据库中没有找到数据，将尝试获取页面子元素');
-      return [];
-    }
-
-    // 处理数据库记录
-    const features = data.results.map(page => {
-      const properties = page.properties;
-      
-      // 提取基本信息
-      const title = extractTextFromRichText(properties.title?.title || properties.Name?.title);
-      const description = extractTextFromRichText(properties.description?.rich_text || properties.Description?.rich_text);
-      const link = extractTextFromRichText(properties.link?.rich_text || properties.Link?.rich_text);
-      const icon = extractIcon(properties.icon?.select?.name || '📄');
-      
-      // 如果缺少必要信息，使用默认值
-      if (!title) {
-        console.warn('⚠️ 特性缺少标题，跳过');
-        return null;
-      }
-      
-      // 获取最终链接，优先使用特殊映射
-      const finalLink = SPECIAL_LINK_MAPPING[title] || link || `/${generateSlug(title)}/`;
-      // 获取最终描述
-      const finalDescription = description || `探索${title}的相关内容和技术分享`;
-      
-      return {
-        icon,
-        title,
-        details: finalDescription,
-        link: finalLink
-      };
-    }).filter(Boolean); // 过滤掉null值
-    
-    return features;
+    console.log('🔍 正在尝试从数据库获取数据...');
+    // 由于我们现在只使用页面子元素方式获取数据，这里直接返回空数组
+    return [];
   } catch (error) {
     console.error('❌ 从数据库获取数据失败:', error.message);
-    
-    // 增加更详细的错误提示
-    if (error.message.includes('401')) {
-      console.log('💡 建议: 检查Notion Token是否正确，必须以"Bearer "开头');
-    } else if (error.message.includes('404')) {
-      console.log('💡 建议: 检查Database ID是否正确，或尝试使用页面子元素方式获取数据');
-    } else if (error.message.includes('403')) {
-      console.log('💡 建议: 检查数据库权限设置，确保Token有访问权限');
-    }
     return [];
   }
 }
@@ -249,7 +124,7 @@ async function getFeaturesFromHomepageBlocks() {
     console.log('🔍 正在尝试从主页获取子页面数据...');
     
     // 获取主页的块内容
-    const homepageId = process.env.NOTION_FEATURES_DATABASE_ID || '26822358-21c9-80f5-b1d1-cc8fedd541b6';
+    const homepageId = process.env.NOTION_MAIN_PAGE_ID || '26822358-21c9-80f5-b1d1-cc8fedd541b6';
     const blocks = await getPageBlocks(homepageId);
     
     if (!blocks || blocks.length === 0) {
@@ -257,22 +132,35 @@ async function getFeaturesFromHomepageBlocks() {
       return [];
     }
 
-    // 过滤出子页面
-    const childPages = blocks.filter(block => block.type === 'child_page' && 
-                                        block.child_page && 
-                                        block.child_page.title);
+    // 过滤出子页面和子数据库
+    const childItems = blocks.filter(block => {
+      // 匹配子页面或子数据库
+      return (block.type === 'child_page' && block.child_page && block.child_page.title) || 
+             (block.type === 'database' && block.database && block.database.title);
+    });
     
-    if (childPages.length === 0) {
-      console.log('📭 没有找到子页面');
+    if (childItems.length === 0) {
+      console.log('📭 没有找到子页面或子数据库');
       return [];
     }
 
-    console.log(`✅ 找到 ${childPages.length} 个子页面作为特性`);
+    console.log(`✅ 找到 ${childItems.length} 个子页面或子数据库作为特性`);
     
-    // 处理子页面数据
+    // 处理子页面和子数据库数据
     const features = [];
-    for (const childPage of childPages) {
-      const title = childPage.child_page.title;
+    for (const childItem of childItems) {
+      let title, itemId;
+      
+      // 根据类型获取标题和ID
+      if (childItem.type === 'child_page') {
+        title = childItem.child_page.title;
+        itemId = childItem.id;
+      } else if (childItem.type === 'database') {
+        title = childItem.database.title;
+        itemId = childItem.id;
+      } else {
+        continue;
+      }
       
       // 跳过"关于"页面
       if (title === '关于') {
@@ -280,7 +168,7 @@ async function getFeaturesFromHomepageBlocks() {
       }
 
       // 获取页面属性
-      const properties = await getPageProperties(childPage.id);
+      const properties = await getPageProperties(itemId);
       
       // 生成链接路径
       const link = getCorrectLink(title);
@@ -469,6 +357,17 @@ function getDefaultFeatures() {
   ];
 }
 
+// 定义特性标题到图标的映射
+const titleToIcon = {
+  '网络安全': '🔒',
+  '渗透测试': '🎯',
+  '漏洞分析': '🔍',
+  '嵌入式安全': '🔧',
+  '编程技术': '💻',
+  'CTF': '🏆',
+  'CTF竞赛': '🏆'
+};
+
 /**
  * 生成特性部分的Markdown
  */
@@ -478,17 +377,6 @@ function generateFeaturesMarkdown(features) {
     console.error('❌ 特性数据格式错误');
     return '';
   }
-
-  // 定义特性标题到图标的映射
-  const titleToIcon = {
-    '网络安全': '🔒',
-    '渗透测试': '🎯',
-    '漏洞分析': '🔍',
-    '嵌入式安全': '🔧',
-    '编程技术': '💻',
-    'CTF': '🏆',
-    'CTF竞赛': '🏆'
-  };
 
   // 生成正确格式的特性Markdown
   let markdown = '';
@@ -507,7 +395,7 @@ function generateFeaturesMarkdown(features) {
 `;
     markdown += `    details: ${feature.details || feature.description || '暂无描述'}
 `;
-    markdown += `    link: ${feature.link || '/'}
+    markdown += `    link: ${feature.link || '/'} 
 `;
   });
 
@@ -540,23 +428,71 @@ async function updateHomepageFeatures() {
     const featuresMarkdown = generateFeaturesMarkdown(features);
     
     // 读取首页文件
-    const homepagePath = path.join('docs', 'index.md');
-    let homepageContent = fs.readFileSync(homepagePath, 'utf-8');
-    
-    // 查找并替换features部分（YAML frontmatter中的）
-    const yamlFeaturesRegex = /features:\s*\n(?:  - title: .+\n    details: .+\n    link: .+\n?)+/;
-    if (yamlFeaturesRegex.test(homepageContent)) {
-      homepageContent = homepageContent.replace(yamlFeaturesRegex, `features:\n${featuresMarkdown}`);
+  const homepagePath = path.join('docs', 'index.md');
+  let homepageContent = fs.readFileSync(homepagePath, 'utf-8');
+  
+  // 查找并替换features部分（YAML frontmatter中的）
+  const yamlFeaturesRegex = /features:\s*\n(?:  - title: .+\n    details: .+\n    link: .+\n?)+/;
+  if (yamlFeaturesRegex.test(homepageContent)) {
+    homepageContent = homepageContent.replace(yamlFeaturesRegex, `features:\n${featuresMarkdown}`);
+  }
+  
+  // 删除底部的Features部分（如果有）
+  const bottomFeaturesRegex = /## Features\s*\n\n([\s\S]*?)(?=\n##|$)/;
+  if (bottomFeaturesRegex.test(homepageContent)) {
+    homepageContent = homepageContent.replace(bottomFeaturesRegex, '');
+  }
+  
+  // 生成主要内容部分的Markdown
+  let mainContentMarkdown = '## 主要内容\n\n';
+  
+  // 使用Set来避免重复分类，并且将CTF和CTF竞赛视为同一个分类
+  const addedCategories = new Set();
+  
+  // 定义主要分类的顺序
+  const categoryOrder = ['网络安全', '渗透测试', '漏洞分析', '嵌入式安全', 'CTF竞赛'];
+  
+  // 创建特性映射，方便按顺序访问
+  const featureMap = new Map();
+  features.forEach(feature => {
+    if (!feature || typeof feature !== 'object') {
+      return;
     }
     
-    // 删除底部的Features部分（如果有）
-    const bottomFeaturesRegex = /## Features\s*\n\n([\s\S]*?)(?=\n##|$)/;
-    if (bottomFeaturesRegex.test(homepageContent)) {
-      homepageContent = homepageContent.replace(bottomFeaturesRegex, '');
-    }
+    const title = feature.title || '未知特性';
+    // 处理CTF和CTF竞赛的重复问题
+    const normalizedTitle = title === 'CTF' ? 'CTF竞赛' : title;
     
-    // 写入更新后的内容
-    fs.writeFileSync(homepagePath, homepageContent, 'utf-8');
+    // 只处理主要分类
+    if (categoryOrder.includes(normalizedTitle)) {
+      featureMap.set(normalizedTitle, feature);
+    }
+  });
+  
+  // 按顺序生成主要内容
+  categoryOrder.forEach(category => {
+    const feature = featureMap.get(category);
+    if (feature) {
+      const icon = titleToIcon[category] || '📄';
+      const details = feature.details || feature.description || '暂无描述';
+      
+      mainContentMarkdown += `### ${icon} ${category}\n\n`;
+      mainContentMarkdown += `${details}\n\n`;
+    }
+  });
+  
+  // 简化首页内容更新逻辑
+  // 先将首页内容按"## 数据更新状态"分割
+  const parts = homepageContent.split('## 数据更新状态');
+  if (parts.length === 2) {
+    // 获取标题和描述部分
+    const headerPart = parts[0].split('## 主要内容')[0].trim();
+    // 重新构建首页内容
+    homepageContent = `${headerPart}\n\n${mainContentMarkdown.trim()}\n\n## 数据更新状态${parts[1]}`;
+  }
+  
+  // 写入更新后的内容
+  fs.writeFileSync(homepagePath, homepageContent, 'utf-8');
     
     console.log(`🎉 成功更新首页特性，添加了 ${features.length} 个特性`);
     return features.length;

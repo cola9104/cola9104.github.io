@@ -81,36 +81,28 @@ export default {
       }
     }
     
-    // 模拟数据（作为后备）
-    const mockPosts = [
-      {
-        id: '1',
-        title: '网络安全基础：常见威胁与防护策略',
-        excerpt: '本文介绍了当前网络环境中常见的安全威胁类型，以及相应的防护策略和最佳实践。通过学习这些知识，您可以更好地保护您的系统和数据安全。',
-        tags: ['网络安全', '防护策略'],
-        createdTime: new Date().toISOString(),
-        cover: null
-      },
-      {
-        id: '2',
-        title: '渗透测试实战：从信息收集到漏洞利用',
-        excerpt: '详细讲解渗透测试的完整流程，包括信息收集、漏洞扫描、漏洞验证和报告编写。通过实际案例分析，帮助读者掌握渗透测试的核心技能。',
-        tags: ['渗透测试', '实战经验'],
-        createdTime: new Date(Date.now() - 86400000).toISOString(),
-        cover: null
-      },
-      {
-        id: '3',
-        title: 'CTF竞赛解析：Web安全题目解题思路',
-        excerpt: '分析近期CTF竞赛中的Web安全题目，分享解题思路和技巧。本文涵盖了常见的Web安全漏洞，如XSS、CSRF、SQL注入等。',
-        tags: ['CTF竞赛', 'Web安全'],
-        createdTime: new Date(Date.now() - 172800000).toISOString(),
-        cover: null
+    // 从 notion-data.json 加载后备数据
+    const loadFallbackData = async () => {
+      try {
+        log('尝试从 notion-data.json 加载后备数据')
+        const response = await fetch('/notion-data.json')
+        if (response.ok) {
+          const data = await response.json()
+          if (data.success && Array.isArray(data.posts) && data.posts.length > 0) {
+            log(`成功从 notion-data.json 加载 ${data.posts.length} 篇文章`)
+            return data.posts
+          } else if (Array.isArray(data.results) && data.results.length > 0) {
+            log(`成功从 notion-data.json 加载 ${data.results.length} 篇文章`)
+            return data.results
+          }
+        }
+        log('notion-data.json 不可用或数据为空', null, 'warn')
+        return []
+      } catch (err) {
+        log('从 notion-data.json 加载数据失败', err.message, 'error')
+        return []
       }
-    ]
-    
-    // 增加直接使用模拟数据的选项，便于调试 - 默认启用模拟数据
-     const useMockDataOnly = ref(true)
+    }
     
     // 从API获取文章数据 - 增强版，添加更详细的错误处理和超时设置
     const fetchPosts = async () => {
@@ -118,17 +110,8 @@ export default {
       error.value = null
       apiStatus.value = '正在准备请求'
       log('开始获取文章数据')
-      
+
       try {
-        // 如果选择只使用模拟数据，则跳过API调用
-        if (useMockDataOnly.value) {
-          log('使用模拟数据，跳过API调用', null, 'warn')
-          apiStatus.value = '使用模拟数据'
-          posts.value = [...mockPosts]
-          lastUpdated.value = new Date().toLocaleString('zh-CN')
-          return
-        }
-        
         apiStatus.value = '正在发送请求'
         log('准备发送API请求到 http://localhost:3000/api/notion/posts')
         
@@ -164,32 +147,54 @@ export default {
         const data = await response.json()
         log('成功获取API响应', data)
         
-        if (data.success && Array.isArray(data.posts)) {
-          posts.value = data.posts
+        if (data.success && Array.isArray(data.posts) && data.posts.length > 0) {
+          // 按最后编辑时间排序，显示最新的文章
+          posts.value = data.posts.sort((a, b) => {
+            const dateA = new Date(a.lastEditedTime || a.createdTime).getTime();
+            const dateB = new Date(b.lastEditedTime || b.createdTime).getTime();
+            return dateB - dateA; // 降序排列，最新的在前
+          });
           apiStatus.value = '数据加载成功'
-          log(`成功加载 ${data.posts.length} 篇文章`)
+          log(`成功加载 ${data.posts.length} 篇文章并按时间排序`)
         } else {
-          apiStatus.value = '数据格式错误'
-          log('API返回的数据格式不正确', data, 'error')
-          throw new Error('API返回的数据格式不正确')
+          apiStatus.value = '数据格式错误或空数据'
+          log('API返回的数据格式不正确或为空', data, 'warn')
+          // 即使数据为空或格式有问题，也提前使用模拟数据
+          throw new Error('API返回的数据无效或为空')
         }
         
         lastUpdated.value = new Date().toLocaleString('zh-CN')
-        
-        // 如果API返回空数据，则使用模拟数据
-        if (posts.value.length === 0) {
-          log('API返回空数据，使用模拟数据', null, 'warn')
-          posts.value = [...mockPosts]
-        }
       } catch (err) {
         apiStatus.value = `请求失败: ${err.name}`
         const errorMessage = err.name === 'AbortError' ? '请求超时' : err.message
         error.value = errorMessage
         log(`获取数据失败: ${errorMessage}`, err, 'error')
-        
-        // 如果API调用失败，使用模拟数据作为后备
-        log('使用模拟数据作为后备')
-        posts.value = [...mockPosts]
+
+        // 自动回退到 notion-data.json，确保用户始终能看到真实的Notion数据
+        log('API请求失败，尝试从 notion-data.json 加载后备数据')
+
+        // 针对超时错误的特殊处理
+        const isTimeoutError = errorMessage.includes('超时') || err.code === 'ETIMEDOUT'
+        if (isTimeoutError) {
+          log('检测到网络超时错误，可能是Notion API连接问题')
+        }
+
+        // 从 notion-data.json 加载数据
+        const fallbackPosts = await loadFallbackData()
+        if (fallbackPosts.length > 0) {
+          posts.value = fallbackPosts.sort((a, b) => {
+            const dateA = new Date(a.lastEditedTime || a.createdTime).getTime()
+            const dateB = new Date(b.lastEditedTime || b.createdTime).getTime()
+            return dateB - dateA
+          })
+          apiStatus.value = '使用本地缓存数据'
+          log(`已加载 ${fallbackPosts.length} 篇文章（来自本地缓存）`)
+        } else {
+          posts.value = []
+          apiStatus.value = '无可用数据'
+          log('无法加载任何数据', null, 'error')
+        }
+
         lastUpdated.value = new Date().toLocaleString('zh-CN')
       } finally {
         loading.value = false

@@ -10,6 +10,7 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
+    "sync:notion": "node sync-to-public.js",
     "lint": "eslint . --ext .js,.vue",
     "lint:fix": "eslint . --ext .js,.vue --fix",
     "format": "prettier --write \"**/*.{js,vue,json,md,yml,yaml}\""
