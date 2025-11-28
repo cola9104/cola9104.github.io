@@ -70,7 +70,6 @@ export default defineConfig(async () => {
         "/渗透测试/": [
           {
             "text": "渗透测试",
-            "collapsible": true,
             "items": [
               {
                 "text": "渗透测试流程",
@@ -121,13 +120,28 @@ export default defineConfig(async () => {
             ]
           }
         ],
-        "/CTF/": [
+        "/编程技术/": [
           {
-            "text": "CTF",
+            "text": "编程技术",
+            "items": [
+              {
+                "text": "编程技术1",
+                "link": "/编程技术/编程技术1/"
+              },
+              {
+                "text": "编程技术2",
+                "link": "/编程技术/编程技术2/"
+              }
+            ]
+          }
+        ],
+        "/CTF竞赛/": [
+          {
+            "text": "CTF竞赛",
             "items": [
               {
                 "text": "CTF1",
-                "link": "/CTF/CTF1/"
+                "link": "/CTF竞赛/CTF1/"
               }
             ]
           }
@@ -135,11 +149,9 @@ export default defineConfig(async () => {
         "/网络安全/": [
           {
             "text": "网络安全",
-            "collapsible": true,
             "items": [
               {
                 "text": "网络安全",
-                "collapsible": true,
                 "items": [
                   {
                     "text": "网络安全概述",
@@ -166,54 +178,6 @@ export default defineConfig(async () => {
                     "link": "/网络安全/安全运营中心/"
                   }
                 ]
-              }
-            ]
-          }
-        ],
-        "/漏洞分析/": [
-          {
-            "text": "漏洞分析",
-            "collapsible": true,
-            "items": [
-              {
-                "text": "漏洞分析",
-                "link": "/漏洞分析/"
-              }
-            ]
-          }
-        ],
-        "/嵌入式安全/": [
-          {
-            "text": "嵌入式安全",
-            "collapsible": true,
-            "items": [
-              {
-                "text": "嵌入式安全",
-                "link": "/嵌入式安全/"
-              }
-            ]
-          }
-        ],
-        "/CTF竞赛/": [
-          {
-            "text": "CTF竞赛",
-            "collapsible": true,
-            "items": [
-              {
-                "text": "CTF竞赛",
-                "link": "/CTF竞赛/"
-              }
-            ]
-          }
-        ],
-        "/CTF/": [
-          {
-            "text": "CTF",
-            "collapsible": true,
-            "items": [
-              {
-                "text": "CTF",
-                "link": "/CTF/"
               }
             ]
           }
