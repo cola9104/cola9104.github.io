@@ -38,9 +38,12 @@ async function setCache(key, data) {
 }
 
 async function fetchNotion(url, options = {}) {
+  // 确保Token格式正确（自动添加Bearer前缀如果缺失）
+  const token = NOTION_TOKEN.startsWith('Bearer ') ? NOTION_TOKEN : `Bearer ${NOTION_TOKEN}`;
+
   const defaultOptions = {
     headers: {
-      'Authorization': `Bearer ${NOTION_TOKEN}`,
+      'Authorization': token,
       'Content-Type': 'application/json',
       'Notion-Version': '2022-06-28'
     }
@@ -48,7 +51,7 @@ async function fetchNotion(url, options = {}) {
   const response = await fetch(url, { ...defaultOptions, ...options });
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(`Notion API error: ${error.message}`);
+    throw new Error(`Notion API error: ${error.message || error.code}`);
   }
   return response.json();
 }
@@ -113,16 +116,27 @@ function generateSlug(title) {
 async function getSubPages(pageId, parentLink) {
     const blocks = await getPageBlocks(pageId);
     const childPages = blocks.filter(block => block.type === 'child_page' && block.child_page?.title);
-    
+
     const subPages = [];
     for (const childPage of childPages) {
         const title = childPage.child_page.title;
         const link = `${parentLink}${generateSlug(title)}/`;
+
+        // 递归获取子页面的子页面
         const nestedSubPages = await getSubPages(childPage.id, link);
-        const subPageData = { title, link };
+
+        // 创建子页面数据对象，使用 text 字段以匹配 VitePress 配置
+        const subPageData = {
+            text: title,
+            link,
+            collapsible: true  // 添加可折叠属性
+        };
+
+        // 如果有嵌套的子页面，添加到 items 字段
         if (nestedSubPages.length > 0) {
             subPageData.items = nestedSubPages;
         }
+
         subPages.push(subPageData);
     }
     return subPages;

@@ -6,6 +6,7 @@
 
 - 🔒 **网络安全专题**：涵盖网络安全、渗透测试、漏洞分析、CTF竞赛
 - 📝 **Notion集成**：从Notion数据库获取和管理文章
+- 🌲 **多级子页面**：支持无限层级的页面嵌套，自动生成侧边栏
 - 🎨 **现代设计**：响应式设计，支持深色模式
 - 🔍 **全文搜索**：内置搜索功能
 - 📱 **移动友好**：完美适配各种设备
@@ -62,21 +63,55 @@ pnpm docs:dev
 pnpm docs:build
 ```
 
+## 🌲 多级子页面功能
+
+本项目支持基于Notion的多级子页面自动生成，可以创建无限层级的页面结构。
+
+### 快速使用
+
+```bash
+# 完整同步（推荐）
+node sync-all.js
+
+# 或分步执行
+node notion-sync.js           # 同步导航数据
+node create-nested-pages.js   # 创建页面文件
+```
+
+### 功能特点
+
+- ✅ 自动从Notion获取页面层级结构
+- ✅ 递归生成多级侧边栏导航
+- ✅ 自动创建对应的markdown文件和目录
+- ✅ 支持中文和英文URL
+- ✅ 可折叠的侧边栏项
+
+📖 **详细指南**: 查看 [NESTED_PAGES_GUIDE.md](./NESTED_PAGES_GUIDE.md) 了解完整配置和使用方法
+
 ## 📁 项目结构
 
 ```
-docs/
-├── .vitepress/
-│   ├── config.js          # VitePress配置
-│   ├── notion.js          # Notion API集成
-│   └── components/
-│       └── NotionBlog.vue # 博客组件
-├── cybersecurity/         # 网络安全专栏
-├── penetration-testing/   # 渗透测试专栏
-├── vulnerability-analysis/ # 漏洞分析专栏
-├── ctf/                   # CTF竞赛专栏
-├── blog/                  # 博客文章
-└── index.md              # 首页
+cola9104.github.io/
+├── .notion-cache/
+│   └── navigation.json    # Notion导航数据缓存
+├── docs/
+│   ├── .vitepress/
+│   │   ├── config.mjs     # VitePress配置（含多级侧边栏）
+│   │   ├── notion.js      # Notion API集成
+│   │   └── components/
+│   ├── 网络安全/           # 自动生成的多级目录
+│   │   ├── index.md
+│   │   ├── 网络安全概述/
+│   │   ├── 常见攻击类型/
+│   │   │   ├── index.md
+│   │   │   └── SQL注入/
+│   │   └── 防护策略/
+│   ├── 渗透测试/
+│   ├── 漏洞分析/
+│   └── index.md
+├── notion-sync.js         # Notion同步脚本
+├── create-nested-pages.js # 页面创建脚本
+└── sync-all.js           # 完整同步脚本
 ```
 
 ## 📝 Notion数据库结构

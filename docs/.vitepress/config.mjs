@@ -9,137 +9,83 @@ const __dirname = path.dirname(__filename)
 const notionCachePath = path.resolve(__dirname, '../../.notion-cache/navigation.json')
 const notionPages = fs.existsSync(notionCachePath) ? JSON.parse(fs.readFileSync(notionCachePath, 'utf-8')) : []
 
+// 递归构建侧边栏项
+function buildSidebarItems(items) {
+  if (!items || !Array.isArray(items)) return []
+
+  return items.map(item => {
+    const sidebarItem = {
+      text: item.text,
+      link: item.link,
+      collapsible: true,
+      collapsed: false
+    }
+
+    // 如果有子项，递归处理
+    if (item.items && item.items.length > 0) {
+      sidebarItem.items = buildSidebarItems(item.items)
+    }
+
+    return sidebarItem
+  })
+}
+
+// 从Notion页面数据构建完整的侧边栏配置
+function buildSidebarConfig(pages) {
+  const sidebarConfig = {}
+
+  pages.forEach(page => {
+    if (page.items && page.items.length > 0) {
+      // 为每个主分类创建侧边栏配置
+      sidebarConfig[page.link] = [
+        {
+          text: page.text,
+          collapsible: true,
+          collapsed: false,
+          items: buildSidebarItems(page.items)
+        }
+      ]
+
+      // 递归处理子页面，为每个子页面也创建侧边栏配置
+      function processSidebarForSubPages(items, parentPath) {
+        items.forEach(item => {
+          if (item.items && item.items.length > 0) {
+            // 为这个子页面创建侧边栏配置
+            sidebarConfig[item.link] = [
+              {
+                text: item.text,
+                collapsible: true,
+                collapsed: false,
+                items: buildSidebarItems(item.items)
+              }
+            ]
+
+            // 继续递归处理更深层的子页面
+            processSidebarForSubPages(item.items, item.link)
+          }
+        })
+      }
+
+      processSidebarForSubPages(page.items, page.link)
+    }
+  })
+
+  return sidebarConfig
+}
+
 export default defineConfig({
   title: 'Cola的网络安全博客',
   description: '专注于网络安全、渗透测试、漏洞分析的技术博客',
   lang: 'zh-CN',
   appearance: 'auto',
   themeConfig: {
-    // 侧边栏（网络安全页面已合并）
-      sidebar: {
-        "/渗透测试/": [
-          {
-            "text": "渗透测试",
-            "items": [
-              {
-                "text": "渗透测试流程",
-                "link": "/渗透测试/渗透测试流程/"
-              },
-              {
-                "text": "渗透测试基础",
-                "link": "/渗透测试/渗透测试基础/"
-              },
-              {
-                "text": "信息收集",
-                "link": "/渗透测试/信息收集/"
-              },
-              {
-                "text": "漏洞扫描",
-                "link": "/渗透测试/漏洞扫描/"
-              }
-            ]
-          }
-        ],
-        "/漏洞分析/": [
-          {
-            "text": "漏洞分析",
-            "items": [
-              {
-                "text": "漏洞分析1",
-                "link": "/漏洞分析/漏洞分析1/"
-              },
-              {
-                "text": "漏洞分析2",
-                "link": "/漏洞分析/漏洞分析2/"
-              }
-            ]
-          }
-        ],
-        "/嵌入式安全/": [
-          {
-            "text": "嵌入式安全",
-            "items": [
-              {
-                "text": "嵌入式安全分析1",
-                "link": "/嵌入式安全/嵌入式安全分析1/"
-              },
-              {
-                "text": "嵌入式安全分析2",
-                "link": "/嵌入式安全/嵌入式安全分析2/"
-              }
-            ]
-          }
-        ],
-        "/编程技术/": [
-          {
-            "text": "编程技术",
-            "items": [
-              {
-                "text": "编程技术1",
-                "link": "/编程技术/编程技术1/"
-              },
-              {
-                "text": "编程技术2",
-                "link": "/编程技术/编程技术2/"
-              }
-            ]
-          }
-        ],
-        "/CTF竞赛/": [
-          {
-            "text": "CTF竞赛",
-            "items": [
-              {
-                "text": "CTF1",
-                "link": "/CTF竞赛/CTF1/"
-              }
-            ]
-          }
-        ],
-        "/网络安全/": [
-          {
-            "text": "网络安全",
-            "items": [
-              {
-                "text": "网络安全",
-                "items": [
-                  {
-                    "text": "网络安全概述",
-                    "link": "/网络安全/网络安全概述/"
-                  },
-                  {
-                    "text": "常见攻击类型",
-                    "link": "/网络安全/常见攻击类型/"
-                  },
-                  {
-                    "text": "防护策略",
-                    "link": "/网络安全/防护策略/"
-                  },
-                  {
-                    "text": "零信任架构",
-                    "link": "/网络安全/零信任架构/"
-                  },
-                  {
-                    "text": "威胁情报",
-                    "link": "/网络安全/威胁情报/"
-                  },
-                  {
-                    "text": "安全运营中心",
-                    "link": "/网络安全/安全运营中心/"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
     siteTitle: 'Cola的网络安全博客',
     logo: {
       light: '/favicon.ico',
       dark: '/favicon.ico'
     },
     nav: [
-      { text: '首页', link: '/', activeMatch: '^/ },
+      { text: '首页', link: '/', activeMatch: '^/$' },
       ...notionPages.map(page => ({
         text: page.text,
         link: page.link,
@@ -149,18 +95,7 @@ export default defineConfig({
     ],
     sidebar: {
       '/': [],
-      ...notionPages.reduce((sidebarConfig, page) => {
-        if (page.items && page.items.length > 0) {
-          sidebarConfig[page.link] = [
-            {
-              text: page.text,
-              collapsible: true,
-              items: page.items
-            }
-          ];
-        }
-        return sidebarConfig;
-      }, {})
+      ...buildSidebarConfig(notionPages)
     },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/cola9104' },
