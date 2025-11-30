@@ -1,5 +1,7 @@
 import DefaultTheme from 'vitepress/theme'
 import './blog.css'
+import BackToTop from './components/BackToTop.vue'
+import { h } from 'vue'
 
 // 导入客户端配置
 import enhanceClient from '../client.js'
@@ -12,6 +14,11 @@ import BlogWithApi from '../components/BlogWithApi.vue'
 
 export default {
   extends: DefaultTheme,
+  Layout() {
+    return h(DefaultTheme.Layout, null, {
+      'layout-bottom': () => h(BackToTop)
+    })
+  },
   enhanceApp({ app, router }) {
     // 注册Notion插件
     app.use(NotionPlugin)
