@@ -236,7 +236,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+/* 使用全局CSS变量，确保与其他页面样式一致 */
 .api-blog {
   max-width: 1200px;
   margin: 0 auto;
@@ -251,11 +252,12 @@ export default {
 .blog-header h2 {
   font-size: 1.8rem;
   margin-bottom: 0.5rem;
+  color: var(--text-primary);
 }
 
 .blog-header p {
   font-size: 1rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 /* API状态指示器样式 */
@@ -271,21 +273,21 @@ export default {
 }
 
 .api-status.success {
-  background-color: #d1fae5;
-  color: #065f46;
-  border-color: #a7f3d0;
+  background-color: var(--success-color);
+  color: white;
+  border-color: var(--success-color);
 }
 
 .api-status.failure {
-  background-color: #fee2e2;
-  color: #991b1b;
-  border-color: #fecaca;
+  background-color: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
 }
 
 .api-status.loading {
-  background-color: #dbeafe;
-  color: #1e40af;
-  border-color: #bfdbfe;
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
 }
 
 /* 错误详情样式 */
@@ -300,7 +302,7 @@ export default {
   text-align: center;
   margin-top: 2rem;
   font-size: 0.85rem;
-  color: #666;
+  color: var(--text-muted);
   font-style: italic;
 }
 
@@ -313,8 +315,8 @@ export default {
 .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #3b82f6;
+  border: 3px solid var(--border-color);
+  border-top: 3px solid var(--primary-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 1rem;
@@ -326,48 +328,61 @@ export default {
 }
 
 .error {
-  color: #ef4444;
-  background-color: #fef2f2;
+  color: var(--accent-color);
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
 }
 
 .retry-btn {
-  background-color: #3b82f6;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
   color: white;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 6px;
   cursor: pointer;
   margin-top: 1rem;
-  transition: background-color 0.2s;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
 }
 
 .retry-btn:hover {
-  background-color: #2563eb;
+  background: var(--primary-dark);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
+/* 使用与其他页面相同的文章网格样式 */
 .posts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 2.5rem;
   margin: 1rem 0;
 }
 
+/* 使用与其他页面相同的文章卡片样式 */
 .post-card {
-  background: #f9fafb;
-  border-radius: 8px;
+  background: var(--bg-primary);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  cursor: pointer;
+  border: 1px solid var(--border-color);
 }
 
 .post-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl);
 }
 
 .post-cover {
-  height: 180px;
+  height: 220px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
   overflow: hidden;
 }
 
@@ -378,20 +393,27 @@ export default {
 }
 
 .post-content {
-  padding: 1.2rem;
+  padding: 2rem;
 }
 
 .post-title {
-  font-size: 1.2rem;
-  margin-bottom: 0.8rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
   line-height: 1.4;
+  transition: var(--transition);
+}
+
+.post-card:hover .post-title {
+  color: var(--primary-color);
 }
 
 .post-excerpt {
-  color: #666;
-  line-height: 1.6;
-  margin-bottom: 1rem;
-  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -409,20 +431,37 @@ export default {
 .post-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
+/* 使用与其他页面相同的标签样式 */
 .tag {
-  background: #e0f2fe;
-  color: #0369a1;
-  padding: 0.2rem 0.6rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.tag:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
 }
 
 .post-date {
-  color: #94a3b8;
+  color: var(--text-muted);
   font-size: 0.85rem;
+}
+
+/* 响应式设计，与其他页面保持一致 */
+@media (max-width: 1024px) {
+  .posts-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -432,11 +471,19 @@ export default {
   
   .posts-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 2rem;
   }
   
   .blog-header h2 {
     font-size: 1.5rem;
+  }
+  
+  .post-cover {
+    height: 180px;
+  }
+  
+  .post-content {
+    padding: 1.5rem;
   }
 }
 </style>

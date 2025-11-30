@@ -154,31 +154,42 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style>
+/* 使用全局CSS变量，确保与其他页面样式一致 */
 .notion-dynamic-content {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  padding: 1.5rem;
+  background: var(--bg-primary);
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  padding: 2rem;
   margin: 1rem 0;
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+.notion-dynamic-content:hover {
+  box-shadow: var(--shadow-lg);
 }
 
 .content-header {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .content-header h3 {
   margin: 0 0 0.5rem 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1e293b;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .content-header p {
   margin: 0;
-  color: #64748b;
-  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-size: 1rem;
 }
 
 .loading-state,
@@ -186,15 +197,18 @@ onMounted(() => {
 .empty-state {
   text-align: center;
   padding: 2rem;
-  color: #64748b;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
 }
 
 .spinner {
   width: 40px;
   height: 40px;
   margin: 0 auto 1rem;
-  border: 4px solid #e2e8f0;
-  border-top: 4px solid #3b82f6;
+  border: 4px solid var(--border-color);
+  border-top: 4px solid var(--primary-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -205,110 +219,153 @@ onMounted(() => {
 }
 
 .content-summary {
-  background-color: #f8fafc;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  font-size: 0.875rem;
-  color: #64748b;
+  background: var(--bg-secondary);
+  padding: 1.25rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
 }
 
 .content-summary p {
-  margin: 0.25rem 0;
+  margin: 0.5rem 0;
+  font-weight: 500;
 }
 
 .blocks-preview {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .blocks-preview h4 {
-  margin: 0 0 1rem 0;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #334155;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+
+.blocks-preview h4::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-radius: 3px;
 }
 
 .block-item {
-  background-color: #f1f5f9;
-  border-radius: 6px;
-  padding: 0.75rem;
-  margin-bottom: 0.75rem;
-  border-left: 3px solid #3b82f6;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid var(--primary-color);
+  transition: var(--transition);
+  border: 1px solid var(--border-color);
+}
+
+.block-item:hover {
+  transform: translateX(5px);
+  box-shadow: var(--shadow-md);
 }
 
 .block-type {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: #3b82f6;
-  margin-bottom: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .block-content {
-  font-size: 0.875rem;
-  color: #334155;
-  line-height: 1.5;
+  font-size: 1rem;
+  color: var(--text-primary);
+  line-height: 1.7;
 }
 
 .more-blocks {
   text-align: center;
-  font-size: 0.75rem;
-  color: #94a3b8;
+  font-size: 0.95rem;
+  color: var(--text-muted);
   font-style: italic;
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
 }
 
 .content-actions {
   display: flex;
   justify-content: center;
-  gap: 0.75rem;
+  gap: 1rem;
   flex-wrap: wrap;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
 }
 
 .refresh-btn,
 .notion-btn {
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 6px;
-  font-size: 0.875rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
 }
 
 .refresh-btn {
-  background-color: #3b82f6;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
   color: white;
 }
 
 .refresh-btn:hover:not(:disabled) {
-  background-color: #2563eb;
+  background: var(--primary-dark);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .refresh-btn:disabled {
-  background-color: #94a3b8;
+  background: var(--text-muted);
   cursor: not-allowed;
+  transform: none;
 }
 
 .notion-btn {
-  background-color: #f1f5f9;
-  color: #334155;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
 }
 
 .notion-btn:hover {
-  background-color: #e2e8f0;
+  background: var(--bg-secondary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--primary-color);
 }
 
 .retry-btn {
-  background-color: #f59e0b;
+  background: linear-gradient(135deg, var(--warning-color), #d97706);
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
+  font-weight: 600;
   margin-top: 1rem;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
 }
 
 .retry-btn:hover {
-  background-color: #d97706;
+  background: #d97706;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 </style>

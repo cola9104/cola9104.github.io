@@ -117,7 +117,7 @@ async function getFeaturesFromDatabase() {
 }
 
 /**
- * 优先使用blocks API获取页面子元素作为特性数据
+ * 优先使用blocks API获取页面子元素作为特性数据，支持递归获取二级子页面
  */
 async function getFeaturesFromHomepageBlocks() {
   try {
@@ -146,7 +146,7 @@ async function getFeaturesFromHomepageBlocks() {
 
     console.log(`✅ 找到 ${childItems.length} 个子页面或子数据库作为特性`);
     
-    // 处理子页面和子数据库数据
+    // 处理子页面和子数据库数据，支持递归获取二级子页面
     const features = [];
     for (const childItem of childItems) {
       let title, itemId;
@@ -184,10 +184,14 @@ async function getFeaturesFromHomepageBlocks() {
         description = getDefaultDescription(title);
       }
 
+      // 递归获取所有层级子页面
+      const subPages = await getSubPages(itemId, title, link);
+      
       features.push({
         title,
         description,
-        link
+        link,
+        subPages // 添加所有层级子页面
       });
     }
 
@@ -196,6 +200,93 @@ async function getFeaturesFromHomepageBlocks() {
     console.error('❌ 从主页获取子页面数据失败:', error.message);
     return [];
   }
+}
+
+/**
+ * 递归获取页面的子页面，支持无限层级
+ * @param {string} pageId - 页面ID
+ * @param {string} parentTitle - 父页面标题
+ * @param {string} parentLink - 父页面链接
+ * @returns {Promise<Array>} - 子页面数组，包含嵌套的子页面
+ */
+async function getSubPages(pageId, parentTitle, parentLink) {
+  try {
+    console.log(`🔍 正在获取 ${parentTitle} 的子页面...`);
+    
+    // 获取页面的块内容
+    const blocks = await getPageBlocks(pageId);
+    
+    if (!blocks || blocks.length === 0) {
+      console.log(`📭 ${parentTitle} 没有子页面`);
+      return [];
+    }
+
+    // 过滤出子页面
+    const childPages = blocks.filter(block => {
+      return block.type === 'child_page' && block.child_page && block.child_page.title;
+    });
+    
+    if (childPages.length === 0) {
+      console.log(`📭 ${parentTitle} 没有子页面`);
+      return [];
+    }
+
+    console.log(`✅ 找到 ${childPages.length} 个 ${parentTitle} 的子页面`);
+    
+    // 处理子页面数据，递归获取子页面的子页面
+    const subPages = [];
+    for (const childPage of childPages) {
+      const subTitle = childPage.child_page.title;
+      const subPageId = childPage.id;
+      
+      // 生成链接路径
+      const subLink = `${parentLink}${generateSlug(subTitle)}/`;
+      
+      // 递归获取当前子页面的子页面
+      const nestedSubPages = await getSubPages(subPageId, subTitle, subLink);
+      
+      const subPageData = {
+        title: subTitle,
+        link: subLink
+      };
+      
+      // 如果有嵌套子页面，添加到当前子页面中
+      if (nestedSubPages.length > 0) {
+        subPageData.subPages = nestedSubPages;
+      }
+      
+      subPages.push(subPageData);
+    }
+
+    return subPages;
+  } catch (error) {
+    console.error(`❌ 获取 ${parentTitle} 的子页面失败:`, error.message);
+    return [];
+  }
+}
+
+/**
+ * 获取正确的链接路径，支持二级子页面
+ */
+function getCorrectLink(title, parentTitle = '') {
+  // 根据标题获取正确的链接路径
+  const linkMap = {
+    '网络安全': '/网络安全/',
+    '渗透测试': '/渗透测试/',
+    '漏洞分析': '/漏洞分析/',
+    '嵌入式安全': '/嵌入式安全/',
+    '编程技术': '/编程技术/',
+    'CTF': '/CTF竞赛/',
+    'CTF竞赛': '/CTF竞赛/'
+  };
+  
+  // 处理二级子页面链接
+  if (parentTitle && linkMap[parentTitle]) {
+    const parentLink = linkMap[parentTitle];
+    return `${parentLink}${generateSlug(title)}/`;
+  }
+  
+  return linkMap[title] || `/${generateSlug(title)}/`;
 }
 
 /**

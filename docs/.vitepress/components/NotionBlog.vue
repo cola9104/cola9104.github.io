@@ -214,7 +214,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+/* 使用全局CSS变量，确保与其他页面样式一致 */
 .notion-blog {
   max-width: 1200px;
   margin: 0 auto;
@@ -228,13 +229,17 @@ export default {
 
 .blog-header h2 {
   font-size: 2.5rem;
-  color: var(--vp-c-text-1);
   margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .blog-header p {
   font-size: 1.1rem;
-  color: var(--vp-c-text-2);
+  color: var(--text-secondary);
 }
 
 .loading {
@@ -243,13 +248,17 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 3rem;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
 }
 
 .spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid var(--vp-c-border);
-  border-top: 4px solid var(--vp-c-brand-1);
+  border: 4px solid var(--border-color);
+  border-top: 4px solid var(--primary-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
@@ -263,53 +272,71 @@ export default {
 .error {
   text-align: center;
   padding: 2rem;
-  color: var(--vp-c-danger-1);
+  color: var(--accent-color);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
 }
 
 .retry-btn {
-  background: var(--vp-c-brand-1);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
   cursor: pointer;
   margin-top: 1rem;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
 }
 
 .retry-btn:hover {
-  background: var(--vp-c-brand-2);
+  background: var(--primary-dark);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .empty {
   text-align: center;
   padding: 3rem;
-  color: var(--vp-c-text-2);
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
 }
 
+/* 使用与其他页面相同的文章网格样式 */
 .posts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 2.5rem;
+  margin: 1rem 0;
 }
 
+/* 使用与其他页面相同的文章卡片样式 */
 .post-card {
-  background: var(--vp-c-bg-soft);
-  border-radius: 12px;
+  background: var(--bg-primary);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
   cursor: pointer;
+  border: 1px solid var(--border-color);
 }
 
 .post-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl);
 }
 
 .post-cover {
   width: 100%;
-  height: 200px;
+  height: 220px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
   overflow: hidden;
 }
 
@@ -320,21 +347,27 @@ export default {
 }
 
 .post-content {
-  padding: 1.5rem;
+  padding: 2rem;
 }
 
 .post-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--vp-c-text-1);
-  margin-bottom: 0.75rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
   line-height: 1.4;
+  transition: var(--transition);
+}
+
+.post-card:hover .post-title {
+  color: var(--primary-color);
 }
 
 .post-excerpt {
-  color: var(--vp-c-text-2);
-  line-height: 1.6;
-  margin-bottom: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -352,21 +385,29 @@ export default {
 .post-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
+/* 使用与其他页面相同的标签样式 */
 .tag {
-  background: var(--vp-c-brand-soft);
-  color: var(--vp-c-brand-1);
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
   font-weight: 500;
+  transition: var(--transition);
+}
+
+.tag:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
 }
 
 .post-date {
-  color: var(--vp-c-text-3);
-  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
 }
 
 .load-more {
@@ -375,23 +416,37 @@ export default {
 }
 
 .load-more-btn {
-  background: var(--vp-c-brand-1);
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
   color: white;
   border: none;
   padding: 0.75rem 2rem;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
-  transition: background 0.2s ease;
+  font-weight: 600;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
 }
 
 .load-more-btn:hover:not(:disabled) {
-  background: var(--vp-c-brand-2);
+  background: var(--primary-dark);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .load-more-btn:disabled {
+  background: var(--text-muted);
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
+}
+
+/* 响应式设计，与其他页面保持一致 */
+@media (max-width: 1024px) {
+  .posts-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -401,11 +456,19 @@ export default {
   
   .posts-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 2rem;
   }
   
   .blog-header h2 {
     font-size: 2rem;
+  }
+  
+  .post-cover {
+    height: 180px;
+  }
+  
+  .post-content {
+    padding: 1.5rem;
   }
 }
 </style>

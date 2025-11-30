@@ -73,7 +73,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+/* 使用全局CSS变量，确保与其他页面样式一致 */
 .notion-blog {
   max-width: 1200px;
   margin: 0 auto;
@@ -88,45 +89,61 @@ export default {
 .blog-header h2 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .blog-header p {
   font-size: 1.1rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
+/* 使用与其他页面相同的文章网格样式 */
 .posts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 2rem;
-  margin-bottom: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 2.5rem;
+  margin: 1rem 0;
 }
 
+/* 使用与其他页面相同的文章卡片样式 */
 .post-card {
-  background: #f8fafc;
-  border-radius: 12px;
+  background: var(--bg-primary);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  padding: 2rem;
 }
 
 .post-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl);
 }
 
 .post-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
   line-height: 1.4;
+  transition: var(--transition);
+}
+
+.post-card:hover .post-title {
+  color: var(--primary-color);
 }
 
 .post-excerpt {
-  color: #666;
-  line-height: 1.6;
-  margin-bottom: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -144,21 +161,37 @@ export default {
 .post-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
+/* 使用与其他页面相同的标签样式 */
 .tag {
-  background: #e0f2fe;
-  color: #0369a1;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
   font-weight: 500;
+  transition: var(--transition);
+}
+
+.tag:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
 }
 
 .post-date {
-  color: #94a3b8;
-  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* 响应式设计，与其他页面保持一致 */
+@media (max-width: 1024px) {
+  .posts-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -168,11 +201,15 @@ export default {
   
   .posts-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 2rem;
   }
   
   .blog-header h2 {
     font-size: 2rem;
+  }
+  
+  .post-card {
+    padding: 1.5rem;
   }
 }
 </style>
