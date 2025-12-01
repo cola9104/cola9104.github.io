@@ -36,8 +36,8 @@ function buildSidebarConfig(pages) {
 
   pages.forEach(page => {
     if (page.items && page.items.length > 0) {
-      // 为每个主分类创建侧边栏配置
-      sidebarConfig[page.link] = [
+      // 构建完整的侧边栏结构
+      const fullSidebarItems = [
         {
           text: page.text,
           collapsible: true,
@@ -46,27 +46,23 @@ function buildSidebarConfig(pages) {
         }
       ]
 
-      // 递归处理子页面，为每个子页面也创建侧边栏配置
-      function processSidebarForSubPages(items, parentPath) {
-        items.forEach(item => {
-          if (item.items && item.items.length > 0) {
-            // 为这个子页面创建侧边栏配置
-            sidebarConfig[item.link] = [
-              {
-                text: item.text,
-                collapsible: true,
-                collapsed: false,
-                items: buildSidebarItems(item.items)
-              }
-            ]
+      // 为主分类创建侧边栏配置
+      sidebarConfig[page.link] = fullSidebarItems
 
-            // 继续递归处理更深层的子页面
-            processSidebarForSubPages(item.items, item.link)
+      // 为所有子页面使用相同的完整侧边栏配置
+      function assignSidebarToAllSubPages(items) {
+        items.forEach(item => {
+          // 为这个子页面分配相同的完整侧边栏
+          sidebarConfig[item.link] = fullSidebarItems
+
+          // 继续递归处理更深层的子页面
+          if (item.items && item.items.length > 0) {
+            assignSidebarToAllSubPages(item.items)
           }
         })
       }
 
-      processSidebarForSubPages(page.items, page.link)
+      assignSidebarToAllSubPages(page.items)
     }
   })
 
@@ -90,8 +86,7 @@ export default defineConfig({
         text: page.text,
         link: page.link,
         activeMatch: `^${page.link}`
-      })),
-      { text: '关于', link: '/关于/', activeMatch: '^/关于/' }
+      }))
     ],
     sidebar: {
       '/': [],

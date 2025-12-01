@@ -1,5 +1,6 @@
 {
-  "results": [],
-  "syncTime": "2025-11-18T07:18:48.227Z",
-  "message": "Notion data placeholder - will be populated during build"
+  "success": true,
+  "posts": [],
+  "total": 0,
+  "syncTime": "2025-12-01T16:00:57.507Z"
 }

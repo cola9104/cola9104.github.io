@@ -1,7 +1,7 @@
 {
-  "syncTime": "2025-11-18T07:18:48.227Z",
-  "totalCategories": 5,
-  "totalPages": 10,
+  "syncTime": "2025-12-01T15:39:16.865Z",
+  "totalCategories": 6,
+  "totalPages": 17,
   "categories": [
     {
       "title": "网络安全",
@@ -16,17 +16,22 @@
     {
       "title": "漏洞分析",
       "path": "/漏洞分析/",
-      "pageCount": 0
+      "pageCount": 2
     },
     {
       "title": "嵌入式安全",
       "path": "/嵌入式安全/",
-      "pageCount": 0
+      "pageCount": 2
     },
     {
-      "title": "CTF",
-      "path": "/CTF/",
-      "pageCount": 0
+      "title": "编程技术",
+      "path": "/编程技术/",
+      "pageCount": 2
+    },
+    {
+      "title": "CTF竞赛",
+      "path": "/CTF竞赛/",
+      "pageCount": 1
     }
   ]
 }

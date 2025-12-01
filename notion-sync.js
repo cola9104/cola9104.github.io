@@ -57,6 +57,12 @@ async function fetchNotion(url, options = {}) {
 }
 
 async function getDatabasePages() {
+  // Skip database sync if NOTION_DATABASE_ID is not configured
+  if (!NOTION_DATABASE_ID) {
+    console.log('[Skip] NOTION_DATABASE_ID not configured, skipping database sync');
+    return [];
+  }
+
   const cacheKey = `database_${NOTION_DATABASE_ID}`;
   const cachedPages = await getCache(cacheKey);
   if (cachedPages) return cachedPages;
@@ -83,7 +89,8 @@ async function getPageBlocks(pageId) {
 
   let blocks = [], hasMore = true, startCursor;
   while (hasMore) {
-    const data = await fetchNotion(`https://api.notion.com/v1/blocks/${pageId}/children?` + new URLSearchParams({start_cursor: startCursor || ''}));
+    const url = `https://api.notion.com/v1/blocks/${pageId}/children` + (startCursor ? `?start_cursor=${startCursor}` : '');
+    const data = await fetchNotion(url);
     blocks.push(...data.results);
     hasMore = data.has_more;
     startCursor = data.next_cursor;
@@ -148,7 +155,7 @@ async function getNavigation() {
   if (cachedNav) return cachedNav;
 
   const blocks = await getPageBlocks(NOTION_MAIN_PAGE_ID);
-  const childPages = blocks.filter(block => block.type === 'child_page' && block.child_page?.title && block.child_page.title !== '关于');
+  const childPages = blocks.filter(block => block.type === 'child_page' && block.child_page?.title);
   
   const nav = [];
   for (const page of childPages) {

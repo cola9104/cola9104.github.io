@@ -682,25 +682,282 @@ body {
   .hero-title {
     font-size: 2rem;
   }
-  
+
   .hero-subtitle {
     font-size: 1.1rem;
   }
-  
+
   .hero-stats {
     gap: 1.5rem;
   }
-  
+
   .stat-number {
     font-size: 2rem;
   }
-  
+
   .filter-tags {
     gap: 1rem;
   }
-  
+
   .filter-tag {
     padding: 0.65rem 1.25rem;
     font-size: 0.9rem;
+  }
+}
+
+/* ====================================
+   侧边栏多级导航样式优化
+   ==================================== */
+
+/* 侧边栏容器优化 */
+.VPSidebar {
+  background: var(--bg-primary);
+  border-right: 1px solid var(--border-color);
+}
+
+/* 侧边栏分组标题样式 */
+.VPSidebarItem.level-0 > .item > .text {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  transition: var(--transition);
+}
+
+.VPSidebarItem.level-0 > .item > .text:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.15));
+  transform: translateX(3px);
+}
+
+/* 一级子页面样式 */
+.VPSidebarItem.level-1 {
+  margin-left: 0.5rem;
+  border-left: 2px solid var(--border-color);
+  padding-left: 0.75rem;
+  transition: var(--transition);
+}
+
+.VPSidebarItem.level-1:hover {
+  border-left-color: var(--primary-color);
+}
+
+.VPSidebarItem.level-1 > .item {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  transition: var(--transition);
+}
+
+.VPSidebarItem.level-1 > .item:hover {
+  background: var(--bg-secondary);
+  transform: translateX(3px);
+}
+
+.VPSidebarItem.level-1 > .item > .text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.VPSidebarItem.level-1 > .item.active > .text {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+/* 二级子页面样式 */
+.VPSidebarItem.level-2 {
+  margin-left: 1rem;
+  border-left: 2px solid rgba(139, 92, 246, 0.2);
+  padding-left: 0.75rem;
+  transition: var(--transition);
+}
+
+.VPSidebarItem.level-2:hover {
+  border-left-color: var(--secondary-color);
+}
+
+.VPSidebarItem.level-2 > .item {
+  padding: 0.45rem 0.65rem;
+  border-radius: 5px;
+  transition: var(--transition);
+}
+
+.VPSidebarItem.level-2 > .item:hover {
+  background: var(--bg-tertiary);
+  transform: translateX(2px);
+}
+
+.VPSidebarItem.level-2 > .item > .text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.VPSidebarItem.level-2 > .item.active > .text {
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+/* 三级及更深层级子页面样式 - 保持与二级子页面相似 */
+.VPSidebarItem.level-3,
+.VPSidebarItem.level-4,
+.VPSidebarItem.level-5 {
+  margin-left: 1rem;
+  border-left: 2px solid rgba(139, 92, 246, 0.15);
+  padding-left: 0.75rem;
+  transition: var(--transition);
+}
+
+.VPSidebarItem.level-3:hover,
+.VPSidebarItem.level-4:hover,
+.VPSidebarItem.level-5:hover {
+  border-left-color: var(--secondary-color);
+}
+
+.VPSidebarItem.level-3 > .item,
+.VPSidebarItem.level-4 > .item,
+.VPSidebarItem.level-5 > .item {
+  padding: 0.45rem 0.65rem;
+  border-radius: 5px;
+  transition: var(--transition);
+}
+
+.VPSidebarItem.level-3 > .item:hover,
+.VPSidebarItem.level-4 > .item:hover,
+.VPSidebarItem.level-5 > .item:hover {
+  background: var(--bg-tertiary);
+  transform: translateX(2px);
+}
+
+.VPSidebarItem.level-3 > .item > .text,
+.VPSidebarItem.level-4 > .item > .text,
+.VPSidebarItem.level-5 > .item > .text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.VPSidebarItem.level-3 > .item.active > .text,
+.VPSidebarItem.level-4 > .item.active > .text,
+.VPSidebarItem.level-5 > .item.active > .text {
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+/* 折叠按钮样式优化 */
+.VPSidebarItem .caret {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.VPSidebarItem .caret:hover {
+  background: var(--bg-tertiary);
+  transform: scale(1.1);
+}
+
+.VPSidebarItem .caret-icon {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.VPSidebarItem.collapsed .caret-icon {
+  transform: rotate(-90deg);
+}
+
+/* 激活状态指示器 */
+.VPSidebarItem > .item.active::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 70%;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-radius: 0 4px 4px 0;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: 70%;
+    opacity: 1;
+  }
+}
+
+/* 链接样式优化 */
+.VPSidebarItem .link {
+  position: relative;
+  display: block;
+  transition: var(--transition);
+}
+
+.VPSidebarItem .link:hover {
+  color: var(--primary-color);
+}
+
+/* 子页面组动画 */
+.VPSidebarItem .items {
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s ease;
+}
+
+.VPSidebarItem.collapsed .items {
+  max-height: 0;
+  opacity: 0;
+}
+
+/* 侧边栏分组间距 */
+.VPSidebarGroup + .VPSidebarGroup {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* 侧边栏内边距优化 */
+.VPSidebar .nav {
+  padding: 1.5rem;
+}
+
+/* 深色模式下的侧边栏优化 */
+@media (prefers-color-scheme: dark) {
+  .VPSidebar {
+    background: var(--bg-secondary);
+    border-right-color: var(--border-color);
+  }
+
+  .VPSidebarItem > .item.active::before {
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+  }
+}
+
+/* 移动端侧边栏优化 */
+@media (max-width: 768px) {
+  .VPSidebar .nav {
+    padding: 1rem;
+  }
+
+  .VPSidebarItem.level-1 {
+    margin-left: 0.25rem;
+    padding-left: 0.5rem;
+  }
+
+  .VPSidebarItem.level-2,
+  .VPSidebarItem.level-3,
+  .VPSidebarItem.level-4,
+  .VPSidebarItem.level-5 {
+    margin-left: 0.5rem;
+    padding-left: 0.5rem;
   }
 }
