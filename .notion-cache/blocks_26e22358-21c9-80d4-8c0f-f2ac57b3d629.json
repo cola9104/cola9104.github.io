@@ -1,0 +1,755 @@
+[
+  {
+    "object": "block",
+    "id": "2bb22358-21c9-809b-9ca0-f21acf546373",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-11-30T10:33:00.000Z",
+    "last_edited_time": "2025-12-02T12:02:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": false,
+    "archived": false,
+    "in_trash": false,
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "嵌入式安全是指保护嵌入式系统免受各种安全威胁的技术和方法。嵌入式系统广泛应用于各种设备中，包括智能家居设备、工业控制系统、医疗设备、汽车电子等，其安全性直接关系到设备的可靠性和用户的安全。",
+            "link": null
+          },
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "嵌入式安全是指保护嵌入式系统免受各种安全威胁的技术和方法。嵌入式系统广泛应用于各种设备中，包括智能家居设备、工业控制系统、医疗设备、汽车电子等，其安全性直接关系到设备的可靠性和用户的安全。",
+          "href": null
+        }
+      ],
+      "color": "default"
+    }
+  },
+  {
+    "object": "block",
+    "id": "2bd22358-21c9-8015-98ff-e4feb0ef2b52",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-12-02T12:02:00.000Z",
+    "last_edited_time": "2025-12-02T12:02:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": false,
+    "archived": false,
+    "in_trash": false,
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "🔍 什么是嵌入式安全？ ",
+            "link": null
+          },
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "🔍 什么是嵌入式安全？ ",
+          "href": null
+        }
+      ],
+      "is_toggleable": false,
+      "color": "default"
+    }
+  },
+  {
+    "object": "block",
+    "id": "2bd22358-21c9-80d2-b3b7-f7cb37396c06",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-12-02T12:02:00.000Z",
+    "last_edited_time": "2025-12-02T12:02:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": false,
+    "archived": false,
+    "in_trash": false,
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": " 嵌入式安全是网络安全领域的一个重要分支，专注于保护资源受限的嵌入式设备和系统。嵌入式系统通常具有独特的硬件和软件特性，因此需要专门的安全解决方案。",
+            "link": null
+          },
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": " 嵌入式安全是网络安全领域的一个重要分支，专注于保护资源受限的嵌入式设备和系统。嵌入式系统通常具有独特的硬件和软件特性，因此需要专门的安全解决方案。",
+          "href": null
+        }
+      ],
+      "color": "default"
+    }
+  },
+  {
+    "object": "block",
+    "id": "2bd22358-21c9-8001-8cef-eb9ae8b41dbd",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-12-02T12:02:00.000Z",
+    "last_edited_time": "2025-12-02T12:02:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": false,
+    "archived": false,
+    "in_trash": false,
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "📊 嵌入式安全的重要性",
+            "link": null
+          },
+          "annotations": {
+            "bold": true,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "📊 嵌入式安全的重要性",
+          "href": null
+        }
+      ],
+      "is_toggleable": false,
+      "color": "default"
+    }
+  },
+  {
+    "object": "block",
+    "id": "2bd22358-21c9-8021-895a-d5f50de5dd80",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-12-02T12:02:00.000Z",
+    "last_edited_time": "2025-12-02T12:02:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": false,
+    "archived": false,
+    "in_trash": false,
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "1. 设备安全",
+            "link": null
+          },
+          "annotations": {
+            "bold": true,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "1. 设备安全",
+          "href": null
+        },
+        {
+          "type": "text",
+          "text": {
+            "content": "\n• 保护嵌入式设备免受物理和远程攻击\n• 防止设备被篡改或劫持\n• 确保设备的完整性和可靠性",
+            "link": null
+          },
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "\n• 保护嵌入式设备免受物理和远程攻击\n• 防止设备被篡改或劫持\n• 确保设备的完整性和可靠性",
+          "href": null
+        },
+        {
+          "type": "text",
+          "text": {
+            "content": "\n2. 数据安全",
+            "link": null
+          },
+          "annotations": {
+            "bold": true,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "\n2. 数据安全",
+          "href": null
+        },
+        {
+          "type": "text",
+          "text": {
+            "content": "\n• 保护设备中的敏感数据\n• 确保数据传输的机密性和完整性\n• 防止数据泄露和滥用",
+            "link": null
+          },
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "\n• 保护设备中的敏感数据\n• 确保数据传输的机密性和完整性\n• 防止数据泄露和滥用",
+          "href": null
+        },
+        {
+          "type": "text",
+          "text": {
+            "content": "\n3. 系统安全",
+            "link": null
+          },
+          "annotations": {
+            "bold": true,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "\n3. 系统安全",
+          "href": null
+        },
+        {
+          "type": "text",
+          "text": {
+            "content": "\n• 保护嵌入式系统的操作系统和应用程序\n• 防止恶意代码的执行\n• 确保系统的可用性和稳定性",
+            "link": null
+          },
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "\n• 保护嵌入式系统的操作系统和应用程序\n• 防止恶意代码的执行\n• 确保系统的可用性和稳定性",
+          "href": null
+        }
+      ],
+      "color": "default"
+    }
+  },
+  {
+    "object": "block",
+    "id": "2bd22358-21c9-8025-9d18-fa2f4671ab1d",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-12-02T12:02:00.000Z",
+    "last_edited_time": "2025-12-02T12:02:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": false,
+    "archived": false,
+    "in_trash": false,
+    "type": "bulleted_list_item",
+    "bulleted_list_item": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "• 保护嵌入式设备免受物理和远程攻击",
+            "link": null
+          },
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "• 保护嵌入式设备免受物理和远程攻击",
+          "href": null
+        }
+      ],
+      "color": "default"
+    }
+  },
+  {
+    "object": "block",
+    "id": "2bd22358-21c9-80a7-887a-c45973100b03",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-12-02T12:02:00.000Z",
+    "last_edited_time": "2025-12-02T12:02:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": false,
+    "archived": false,
+    "in_trash": false,
+    "type": "bulleted_list_item",
+    "bulleted_list_item": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "• 防止设备被篡改或劫持",
+            "link": null
+          },
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "• 防止设备被篡改或劫持",
+          "href": null
+        }
+      ],
+      "color": "default"
+    }
+  },
+  {
+    "object": "block",
+    "id": "2bd22358-21c9-8030-99d5-c164bef6ada1",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-12-02T12:02:00.000Z",
+    "last_edited_time": "2025-12-02T12:02:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": false,
+    "archived": false,
+    "in_trash": false,
+    "type": "bulleted_list_item",
+    "bulleted_list_item": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "• 确保设备的完整性和可靠性",
+            "link": null
+          },
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "• 确保设备的完整性和可靠性",
+          "href": null
+        }
+      ],
+      "color": "default"
+    }
+  },
+  {
+    "object": "block",
+    "id": "2bd22358-21c9-8080-87d5-e9ab6e2900fc",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-12-02T12:02:00.000Z",
+    "last_edited_time": "2025-12-02T12:02:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": false,
+    "archived": false,
+    "in_trash": false,
+    "type": "bulleted_list_item",
+    "bulleted_list_item": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "• 保护设备中的敏感数据",
+            "link": null
+          },
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "• 保护设备中的敏感数据",
+          "href": null
+        }
+      ],
+      "color": "default"
+    }
+  },
+  {
+    "object": "block",
+    "id": "2bd22358-21c9-8074-a152-d00f019ebb0f",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-12-02T12:02:00.000Z",
+    "last_edited_time": "2025-12-02T12:02:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": false,
+    "archived": false,
+    "in_trash": false,
+    "type": "bulleted_list_item",
+    "bulleted_list_item": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "• 确保数据传输的机密性和完整性",
+            "link": null
+          },
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "• 确保数据传输的机密性和完整性",
+          "href": null
+        }
+      ],
+      "color": "default"
+    }
+  },
+  {
+    "object": "block",
+    "id": "2bd22358-21c9-8041-88f2-c58c189643f6",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-12-02T12:02:00.000Z",
+    "last_edited_time": "2025-12-02T12:02:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": false,
+    "archived": false,
+    "in_trash": false,
+    "type": "bulleted_list_item",
+    "bulleted_list_item": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "• 防止数据泄露和滥用",
+            "link": null
+          },
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "• 防止数据泄露和滥用",
+          "href": null
+        }
+      ],
+      "color": "default"
+    }
+  },
+  {
+    "object": "block",
+    "id": "2bd22358-21c9-8092-9eb2-c63583653197",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-12-02T12:02:00.000Z",
+    "last_edited_time": "2025-12-02T12:02:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": false,
+    "archived": false,
+    "in_trash": false,
+    "type": "bulleted_list_item",
+    "bulleted_list_item": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "• 保护嵌入式系统的操作系统和应用程序",
+            "link": null
+          },
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "• 保护嵌入式系统的操作系统和应用程序",
+          "href": null
+        }
+      ],
+      "color": "default"
+    }
+  },
+  {
+    "object": "block",
+    "id": "2bd22358-21c9-80ae-9b0b-e133d0927ec5",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-12-02T12:02:00.000Z",
+    "last_edited_time": "2025-12-02T12:02:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": false,
+    "archived": false,
+    "in_trash": false,
+    "type": "bulleted_list_item",
+    "bulleted_list_item": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "• 防止恶意代码的执行",
+            "link": null
+          },
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "• 防止恶意代码的执行",
+          "href": null
+        }
+      ],
+      "color": "default"
+    }
+  },
+  {
+    "object": "block",
+    "id": "2bd22358-21c9-801e-8ce6-f38ceef969e8",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-12-02T12:02:00.000Z",
+    "last_edited_time": "2025-12-02T12:02:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": false,
+    "archived": false,
+    "in_trash": false,
+    "type": "bulleted_list_item",
+    "bulleted_list_item": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "• 确保系统的可用性和稳定性",
+            "link": null
+          },
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "strikethrough": false,
+            "underline": false,
+            "code": false,
+            "color": "default"
+          },
+          "plain_text": "• 确保系统的可用性和稳定性",
+          "href": null
+        }
+      ],
+      "color": "default"
+    }
+  },
+  {
+    "object": "block",
+    "id": "2b222358-21c9-805a-9d8e-da1aeb35a081",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-11-21T07:36:00.000Z",
+    "last_edited_time": "2025-11-30T09:20:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": true,
+    "archived": false,
+    "in_trash": false,
+    "type": "child_page",
+    "child_page": {
+      "title": "嵌入式安全分析1"
+    }
+  },
+  {
+    "object": "block",
+    "id": "2b222358-21c9-80cf-92e3-d35e02e903e8",
+    "parent": {
+      "type": "page_id",
+      "page_id": "26e22358-21c9-80d4-8c0f-f2ac57b3d629"
+    },
+    "created_time": "2025-11-21T07:36:00.000Z",
+    "last_edited_time": "2025-11-24T01:06:00.000Z",
+    "created_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "last_edited_by": {
+      "object": "user",
+      "id": "20fd872b-594c-81ef-b33a-00026621bee4"
+    },
+    "has_children": true,
+    "archived": false,
+    "in_trash": false,
+    "type": "child_page",
+    "child_page": {
+      "title": "嵌入式安全分析2"
+    }
+  }
+]

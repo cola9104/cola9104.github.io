@@ -183,26 +183,53 @@ async function syncNotionData() {
       // Use ID suffix if needed to avoid collision, but for now keep simple
       const fileName = safeTitle; 
       
-      const content = `---
+        // Fetch page content
+        const pageContent = await getPageMarkdown(page.id);
+
+        const content = `---
 title: ${page.title}
 notionId: ${page.id}
 lastSync: ${new Date().toISOString()}
 layout: doc
 ---
 
-<NotionPage
-  notionId="${page.id}"
-  title="${page.title}"
-  lastUpdated="${page.last_edited_time}"
-  notionUrl="${page.url}"
-/>
-
-${page.content || ''}
+${pageContent}
 `;
+
       fs.writeFileSync(path.join(dirPath, `${fileName}.md`), content);
     }
-
     console.log(`✅ 已生成 ${allPages.length} 个页面文件`);
+
+    // 5. Update Homepage Features (SKIPPED)
+    // console.log('\n🏠 更新首页特性...');
+    // ... skipping features generation ...
+
+    const homepagePath = 'docs/index.md';
+    if (fs.existsSync(homepagePath)) {
+        // 6. Update Homepage Body with Notion Main Page Content and Sitemap
+        console.log('📝 更新首页正文...');
+        
+        // Fetch Main Page Content (Markdown)
+        const mainPageMarkdown = await getPageMarkdown(MAIN_PAGE_ID);
+
+        const newBodyContent = `
+${mainPageMarkdown}
+`;
+        
+        // Create clean homepage content without features
+        const newContent = `---
+title: 首页
+layout: home
+---
+${newBodyContent}`;
+
+        fs.writeFileSync(homepagePath, newContent);
+        console.log('✅ 首页正文已更新（仅保留 Notion 内容）');
+
+      } else {
+        console.warn('⚠️ 首页 docs/index.md 不存在，跳过更新');
+      }
+
     console.log('\n🎉 同步完成！');
 
   } catch (error) {

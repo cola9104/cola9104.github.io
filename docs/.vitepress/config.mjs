@@ -22,7 +22,7 @@ function mapToSidebarItems(nodes) {
   return nodes.map(node => ({
     text: node.title,
     link: getLink(node.title),
-    collapsed: false, // Default to open
+    collapsed: true, // Default to closed to avoid too long sidebar
     items: mapToSidebarItems(node.items)
   }))
 }

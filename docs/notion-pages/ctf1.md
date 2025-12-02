@@ -1,16 +1,9 @@
 ---
 title: CTF1
 notionId: 2b522358-21c9-80f2-8065-c7469e603d2f
-lastSync: 2025-12-02T13:31:44.087Z
+lastSync: 2025-12-02T15:12:30.157Z
 layout: doc
 ---
-
-<NotionPage
-  notionId="2b522358-21c9-80f2-8065-c7469e603d2f"
-  title="CTF1"
-  lastUpdated="2025-12-02T12:01:00.000Z"
-  notionUrl="https://www.notion.so/CTF1-2b52235821c980f28065c7469e603d2f"
-/>
 
 
 嵌入式安全是指保护嵌入式系统免受各种安全威胁的技术和方法。嵌入式系统广泛应用于各种设备中，包括智能家居设备、工业控制系统、医疗设备、汽车电子等，其安全性直接关系到设备的可靠性和用户的安全。
