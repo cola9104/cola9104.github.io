@@ -69,7 +69,9 @@ async function getPageChildren(pageId) {
 
 async function getPageMarkdown(pageId) {
   try {
-    const mdblocks = await n2m.pageToMarkdown(pageId);
+    let mdblocks = await n2m.pageToMarkdown(pageId);
+    // 只保留当前页面内容，过滤掉子页面引用
+    mdblocks = mdblocks.filter(b => b.type !== 'child_page');
     const mdString = n2m.toMarkdownString(mdblocks);
     return mdString.parent;
   } catch (err) {
