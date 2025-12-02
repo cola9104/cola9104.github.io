@@ -7,7 +7,10 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const notionSyncPath = path.resolve(__dirname, 'notion-sync.json')
-const notionSyncData = fs.existsSync(notionSyncPath) ? JSON.parse(fs.readFileSync(notionSyncPath, 'utf-8')) : { pages: [] }
+const rawSync = fs.existsSync(notionSyncPath)
+  ? JSON.parse(fs.readFileSync(notionSyncPath, 'utf-8'))
+  : {}
+const pagesData = Array.isArray(rawSync.pages) ? rawSync.pages : []
 
 // Helper to convert title to link
 const getLink = (title) => `/notion-pages/${title.replace(/[^\w\u4e00-\u9fa5]/g, '-').replace(/-+/g, '-').toLowerCase()}`
@@ -25,7 +28,7 @@ function mapToSidebarItems(nodes) {
 }
 
 // Build notionPages for Nav (Top Level Only)
-const notionPages = notionSyncData.pages.map(page => ({
+const notionPages = pagesData.map(page => ({
   text: page.title,
   link: getLink(page.title),
   items: mapToSidebarItems(page.items) // Store full tree for sidebar construction
