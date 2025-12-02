@@ -60,7 +60,7 @@
 .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid var(--vp-c-divider);
+  border: 3px solid var(--border-color);
   border-top-color: var(--primary-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
