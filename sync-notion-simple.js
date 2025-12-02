@@ -216,10 +216,20 @@ ${pageContent}
 ${mainPageMarkdown}
 `;
         
-        // Create clean homepage content without features
+        // Create clean homepage content with Hero section
         const newContent = `---
-title: 首页
 layout: home
+
+hero:
+  name: "${mainPageTitle}"
+  tagline: "分享实战经验，探索安全技术"
+  actions:
+    - theme: brand
+      text: 开始阅读
+      link: /notion-pages/网络安全
+    - theme: alt
+      text: 关于我
+      link: /notion-pages/关于
 ---
 ${newBodyContent}`;
 

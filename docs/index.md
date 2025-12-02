@@ -1,6 +1,16 @@
 ---
-title: 首页
 layout: home
+
+hero:
+  name: "Cola的网络安全博客"
+  tagline: "分享实战经验，探索安全技术"
+  actions:
+    - theme: brand
+      text: 开始阅读
+      link: /notion-pages/网络安全
+    - theme: alt
+      text: 关于我
+      link: /notion-pages/关于
 ---
 
 
