@@ -1,15 +1,15 @@
 ---
-title: 编程技术
-notionId: 2b822358-21c9-80b4-9d37-c207b390aa58
+title: CTF1
+notionId: 2b522358-21c9-80f2-8065-c7469e603d2f
 lastSync: 2025-12-02T12:11:37.220Z
 layout: doc
 ---
 
 <NotionPage
-  notionId="2b822358-21c9-80b4-9d37-c207b390aa58"
-  title="编程技术"
-  lastUpdated="2025-12-02T12:02:00.000Z"
-  notionUrl="https://www.notion.so/2b82235821c980b49d37c207b390aa58"
+  notionId="2b522358-21c9-80f2-8065-c7469e603d2f"
+  title="CTF1"
+  lastUpdated="2025-12-02T12:01:00.000Z"
+  notionUrl="https://www.notion.so/CTF1-2b52235821c980f28065c7469e603d2f"
 />
 
 
@@ -47,9 +47,4 @@ layout: doc
 - • 保护嵌入式系统的操作系统和应用程序
 - • 防止恶意代码的执行
 - • 确保系统的可用性和稳定性
-
-## 编程技术2
-
-·
-
 

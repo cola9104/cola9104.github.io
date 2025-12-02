@@ -1,185 +1,210 @@
 import dotenv from 'dotenv';
 import fetch from 'node-fetch';
 import fs from 'fs';
+import path from 'path';
+import { Client } from '@notionhq/client';
+import { NotionToMarkdown } from 'notion-to-md';
 
 dotenv.config();
 
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
-const DATABASE_ID = process.env.NOTION_DATABASE_ID;
 const MAIN_PAGE_ID = process.env.NOTION_MAIN_PAGE_ID;
+
+if (!NOTION_TOKEN) {
+  console.error('❌ 错误: 未找到 NOTION_TOKEN 环境变量');
+  process.exit(1);
+}
+
+if (!MAIN_PAGE_ID) {
+  console.error('❌ 错误: 未找到 NOTION_MAIN_PAGE_ID 环境变量');
+  process.exit(1);
+}
+
+const notion = new Client({ auth: NOTION_TOKEN.replace('Bearer ', '') });
+const n2m = new NotionToMarkdown({ notionClient: notion });
+
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+async function fetchWithRetry(url, options, retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch(url, options);
+      if (response.status === 429) {
+        const retryAfter = response.headers.get('Retry-After') || 1;
+        console.warn(`⚠️ Rate limited. Waiting ${retryAfter}s...`);
+        await sleep(retryAfter * 1000);
+        continue;
+      }
+      if (!response.ok) {
+        throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+      }
+      return response;
+    } catch (err) {
+      if (i === retries - 1) throw err;
+      await sleep(1000 * (i + 1));
+    }
+  }
+}
+
+async function getPageDetails(pageId) {
+  const response = await fetchWithRetry(`https://api.notion.com/v1/pages/${pageId}`, {
+    headers: {
+      'Authorization': NOTION_TOKEN,
+      'Notion-Version': '2022-06-28'
+    }
+  });
+  return await response.json();
+}
+
+async function getPageChildren(pageId) {
+  const response = await fetchWithRetry(`https://api.notion.com/v1/blocks/${pageId}/children?page_size=100`, {
+    headers: {
+      'Authorization': NOTION_TOKEN,
+      'Notion-Version': '2022-06-28'
+    }
+  });
+  const data = await response.json();
+  return data.results.filter(block => block.type === 'child_page');
+}
+
+async function getPageMarkdown(pageId) {
+  try {
+    const mdblocks = await n2m.pageToMarkdown(pageId);
+    const mdString = n2m.toMarkdownString(mdblocks);
+    return mdString.parent;
+  } catch (err) {
+    console.error(`❌ Error converting page ${pageId} to markdown: ${err.message}`);
+    return '';
+  }
+}
+
+async function buildPageTree(pageId, depth = 0) {
+  if (depth > 3) return []; // Prevent infinite recursion or too deep
+
+  console.log(`${'  '.repeat(depth)}📂 Scanning page children: ${pageId}`);
+  
+  const children = await getPageChildren(pageId);
+  const nodes = [];
+  
+  for (const child of children) {
+    await sleep(200); // Be nice to API
+    
+    try {
+      const details = await getPageDetails(child.id);
+      const title = child.child_page.title;
+      
+      console.log(`${'  '.repeat(depth + 1)}📄 Found: ${title}`);
+      
+      // Fetch markdown content for the page
+      const markdownContent = await getPageMarkdown(child.id);
+
+      const node = {
+        id: child.id,
+        title: title,
+        created_time: details.created_time,
+        last_edited_time: details.last_edited_time,
+        url: details.url,
+        content: markdownContent, // Store markdown content
+        items: await buildPageTree(child.id, depth + 1)
+      };
+      
+      nodes.push(node);
+    } catch (err) {
+      console.error(`${'  '.repeat(depth + 1)}❌ Error processing ${child.id}: ${err.message}`);
+    }
+  }
+  
+  return nodes;
+}
+
+function flattenPages(nodes, list = []) {
+  for (const node of nodes) {
+    list.push(node);
+    if (node.items && node.items.length > 0) {
+      flattenPages(node.items, list);
+    }
+  }
+  return list;
+}
 
 async function syncNotionData() {
   try {
-    console.log('🔄 开始同步Notion数据...\n');
+    console.log('🔄 开始同步Notion数据 (递归模式)...\n');
 
-    // 1. 获取数据库结构
-    console.log('📊 获取数据库结构...');
-    const dbResponse = await fetch(`https://api.notion.com/v1/databases/${DATABASE_ID}`, {
-      headers: {
-        'Authorization': NOTION_TOKEN,
-        'Content-Type': 'application/json',
-        'Notion-Version': '2022-06-28'
-      }
-    });
+    // 1. Get Main Page Info
+    const mainPageDetails = await getPageDetails(MAIN_PAGE_ID);
+    const mainPageTitle = mainPageDetails.properties?.title?.title?.[0]?.text?.content || 'Notion Blog';
+    console.log(`✅ 主页面: ${mainPageTitle} (${MAIN_PAGE_ID})\n`);
 
-    if (!dbResponse.ok) {
-      throw new Error(`数据库查询失败: ${dbResponse.status} ${dbResponse.statusText}`);
-    }
-
-    const dbData = await dbResponse.json();
-    console.log(`✅ 数据库: ${dbData.title[0]?.text?.content || 'Untitled'}`);
-    console.log(`📋 可用属性:`, Object.keys(dbData.properties).join(', '));
-    console.log('');
-
-    // 2. 查询所有页面（不使用过滤器）
-    console.log('📝 查询数据库中的所有页面...');
-    const queryResponse = await fetch(`https://api.notion.com/v1/databases/${DATABASE_ID}/query`, {
-      method: 'POST',
-      headers: {
-        'Authorization': NOTION_TOKEN,
-        'Content-Type': 'application/json',
-        'Notion-Version': '2022-06-28'
-      },
-      body: JSON.stringify({
-        page_size: 100
-      })
-    });
-
-    if (!queryResponse.ok) {
-      const errorText = await queryResponse.text();
-      throw new Error(`页面查询失败: ${queryResponse.status} - ${errorText}`);
-    }
-
-    const queryData = await queryResponse.json();
-    console.log(`✅ 找到 ${queryData.results.length} 个页面\n`);
-
-    // 3. 提取页面信息
-    const pages = queryData.results.map(page => {
-      // 尝试从不同可能的属性中提取标题
-      let title = 'Untitled';
-
-      // 常见的标题属性名称
-      const titleProps = ['Title', 'Name', '标题', '名称', 'title', 'name'];
-      for (const prop of titleProps) {
-        if (page.properties[prop]?.title?.[0]?.text?.content) {
-          title = page.properties[prop].title[0].text.content;
-          break;
-        }
-      }
-
-      return {
-        id: page.id,
-        title: title,
-        created_time: page.created_time,
-        last_edited_time: page.last_edited_time,
-        url: page.url,
-        properties: Object.keys(page.properties)
-      };
-    });
-
-    // 显示前5个页面
-    console.log('📄 页面列表（前5个）:');
-    pages.slice(0, 5).forEach((page, index) => {
-      console.log(`  ${index + 1}. ${page.title}`);
-      console.log(`     ID: ${page.id}`);
-      console.log(`     属性: ${page.properties.join(', ')}`);
-      console.log('');
-    });
-
-    // 4. 获取主页面的子页面
-    if (MAIN_PAGE_ID) {
-      console.log('📑 获取主页面的子页面...');
-      const childrenResponse = await fetch(`https://api.notion.com/v1/blocks/${MAIN_PAGE_ID}/children`, {
-        headers: {
-          'Authorization': NOTION_TOKEN,
-          'Notion-Version': '2022-06-28'
-        }
-      });
-
-      if (childrenResponse.ok) {
-        const childrenData = await childrenResponse.json();
-        const childPages = childrenData.results.filter(block => block.type === 'child_page');
-        console.log(`✅ 找到 ${childPages.length} 个子页面`);
-
-        childPages.forEach((child, index) => {
-          console.log(`  ${index + 1}. ${child.child_page?.title || 'Untitled'}`);
-        });
-        console.log('');
-      }
-    }
-
-    // 5. 保存同步数据
+    // 2. Build Tree
+    console.log('🌳 构建页面树结构...');
+    const pageTree = await buildPageTree(MAIN_PAGE_ID);
+    
+    // 3. Save Sync Data
     const syncData = {
       lastSync: new Date().toISOString(),
-      database: {
-        id: DATABASE_ID,
-        title: dbData.title[0]?.text?.content || 'Untitled',
-        properties: Object.keys(dbData.properties)
+      source: {
+        type: 'page_tree',
+        mainPageId: MAIN_PAGE_ID,
+        title: mainPageTitle
       },
-      pages: pages,
-      totalPages: pages.length
+      pages: pageTree, // This is the nested structure
+      stats: {
+        topLevel: pageTree.length,
+        total: flattenPages(pageTree).length
+      }
     };
 
-    // 确保目录存在
-    if (!fs.existsSync('docs/.vitepress')) {
-      fs.mkdirSync('docs/.vitepress', { recursive: true });
+    const vitepressDir = 'docs/.vitepress';
+    if (!fs.existsSync(vitepressDir)) {
+      fs.mkdirSync(vitepressDir, { recursive: true });
     }
 
-    fs.writeFileSync('docs/.vitepress/notion-sync.json', JSON.stringify(syncData, null, 2));
-    console.log('✅ 同步数据已保存到 docs/.vitepress/notion-sync.json');
-    console.log('');
+    fs.writeFileSync(path.join(vitepressDir, 'notion-sync.json'), JSON.stringify(syncData, null, 2));
+    console.log(`\n✅ 结构数据已保存 (Total pages: ${syncData.stats.total})`);
 
-    // 6. 生成 markdown 文件
-    console.log('📝 生成页面 markdown 文件...');
+    // 4. Generate Markdown Files (Flat list for now, but unique filenames might be needed if titles clash)
+    console.log('\n📝 生成 Markdown 文件...');
+    const dirPath = 'docs/notion-pages';
+    if (!fs.existsSync(dirPath)) {
+      fs.mkdirSync(dirPath, { recursive: true });
+    }
 
-    for (const page of pages) {
-      const fileName = page.title
+    const allPages = flattenPages(pageTree);
+    
+    for (const page of allPages) {
+      const safeTitle = page.title
         .replace(/[^\w\u4e00-\u9fa5]/g, '-')
         .replace(/-+/g, '-')
         .toLowerCase();
-
+        
+      // Use ID suffix if needed to avoid collision, but for now keep simple
+      const fileName = safeTitle; 
+      
       const content = `---
 title: ${page.title}
 notionId: ${page.id}
 lastSync: ${new Date().toISOString()}
+layout: doc
 ---
 
-# ${page.title}
+<NotionPage
+  notionId="${page.id}"
+  title="${page.title}"
+  lastUpdated="${page.last_edited_time}"
+  notionUrl="${page.url}"
+/>
 
-> 本页面同步自 Notion
->
-> 最后更新: ${new Date(page.last_edited_time).toLocaleString('zh-CN')}
->
-> [在 Notion 中查看](${page.url})
-
-<!-- Notion 内容将在这里显示 -->
-
-<script setup>
-import { ref, onMounted } from 'vue'
-
-const notionContent = ref('')
-
-onMounted(async () => {
-  // 这里可以添加加载 Notion 内容的逻辑
-  notionContent.value = '正在加载 Notion 内容...'
-})
-</script>
+${page.content || ''}
 `;
-
-      const dirPath = 'docs/notion-pages';
-      if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
-      }
-
-      fs.writeFileSync(`${dirPath}/${fileName}.md`, content);
+      fs.writeFileSync(path.join(dirPath, `${fileName}.md`), content);
     }
 
-    console.log(`✅ 已生成 ${pages.length} 个页面文件到 docs/notion-pages/`);
-    console.log('');
-    console.log('🎉 Notion 数据同步完成！');
+    console.log(`✅ 已生成 ${allPages.length} 个页面文件`);
+    console.log('\n🎉 同步完成！');
 
   } catch (error) {
-    console.error('❌ 同步失败:', error.message);
+    console.error('\n❌ 致命错误:', error);
     process.exit(1);
   }
 }

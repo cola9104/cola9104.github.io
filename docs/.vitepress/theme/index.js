@@ -1,5 +1,6 @@
 import DefaultTheme from 'vitepress/theme'
 import './blog.css'
+import './notion.css'
 import BackToTop from './components/BackToTop.vue'
 import { h } from 'vue'
 
@@ -11,6 +12,7 @@ import { NotionPlugin } from '../plugins/notionPlugin.js'
 
 // 导入Vue组件
 import BlogWithApi from '../components/BlogWithApi.vue'
+import NotionPage from '../components/NotionPage.vue'
 
 export default {
   extends: DefaultTheme,
@@ -28,5 +30,6 @@ export default {
 
     // 注册全局组件
     app.component('BlogWithApi', BlogWithApi)
+    app.component('NotionPage', NotionPage)
   }
 }

@@ -6,64 +6,67 @@ import fs from 'fs'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const notionCachePath = path.resolve(__dirname, '../../.notion-cache/navigation.json')
-const notionPages = fs.existsSync(notionCachePath) ? JSON.parse(fs.readFileSync(notionCachePath, 'utf-8')) : []
+const notionSyncPath = path.resolve(__dirname, 'notion-sync.json')
+const notionSyncData = fs.existsSync(notionSyncPath) ? JSON.parse(fs.readFileSync(notionSyncPath, 'utf-8')) : { pages: [] }
 
-// 递归构建侧边栏项
-function buildSidebarItems(items) {
-  if (!items || !Array.isArray(items)) return []
+// Helper to convert title to link
+const getLink = (title) => `/notion-pages/${title.replace(/[^\w\u4e00-\u9fa5]/g, '-').replace(/-+/g, '-').toLowerCase()}`
 
-  return items.map(item => {
-    const sidebarItem = {
-      text: item.text,
-      link: item.link,
-      collapsible: true,
-      collapsed: false
-    }
-
-    // 如果有子项，递归处理
-    if (item.items && item.items.length > 0) {
-      sidebarItem.items = buildSidebarItems(item.items)
-    }
-
-    return sidebarItem
-  })
+// Recursive function to map notion-sync tree to VitePress sidebar items
+function mapToSidebarItems(nodes) {
+  if (!nodes || nodes.length === 0) return []
+  
+  return nodes.map(node => ({
+    text: node.title,
+    link: getLink(node.title),
+    collapsed: false, // Default to open
+    items: mapToSidebarItems(node.items)
+  }))
 }
 
-// 从Notion页面数据构建完整的侧边栏配置
+// Build notionPages for Nav (Top Level Only)
+const notionPages = notionSyncData.pages.map(page => ({
+  text: page.title,
+  link: getLink(page.title),
+  items: mapToSidebarItems(page.items) // Store full tree for sidebar construction
+}))
+
+// Build Sidebar Config
 function buildSidebarConfig(pages) {
   const sidebarConfig = {}
 
   pages.forEach(page => {
-    if (page.items && page.items.length > 0) {
-      // 构建完整的侧边栏结构
-      const fullSidebarItems = [
-        {
-          text: page.text,
-          collapsible: true,
-          collapsed: false,
-          items: buildSidebarItems(page.items)
-        }
-      ]
-
-      // 为主分类创建侧边栏配置
-      sidebarConfig[page.link] = fullSidebarItems
-
-      // 为所有子页面使用相同的完整侧边栏配置
-      function assignSidebarToAllSubPages(items) {
-        items.forEach(item => {
-          // 为这个子页面分配相同的完整侧边栏
-          sidebarConfig[item.link] = fullSidebarItems
-
-          // 继续递归处理更深层的子页面
-          if (item.items && item.items.length > 0) {
-            assignSidebarToAllSubPages(item.items)
-          }
-        })
+    // Main category link
+    const mainLink = page.link
+    
+    // Build the sidebar structure for this category
+    // The category itself is the first item, followed by its children
+    const categorySidebar = [
+      {
+        text: page.text,
+        link: page.link,
+        items: page.items // Recursive items from mapToSidebarItems
       }
+    ]
 
-      assignSidebarToAllSubPages(page.items)
+    // Assign this sidebar to the main category page
+    sidebarConfig[mainLink] = categorySidebar
+
+    // Recursively assign this sidebar to all descendant pages
+    // so that when you visit a child page, you still see the full category sidebar
+    function assignSidebarToDescendants(items) {
+      if (!items) return
+      items.forEach(item => {
+        if (item.link) {
+          sidebarConfig[item.link] = categorySidebar
+        }
+        if (item.items) {
+          assignSidebarToDescendants(item.items)
+        }
+      })
     }
+    
+    assignSidebarToDescendants(page.items)
   })
 
   return sidebarConfig
@@ -235,10 +238,6 @@ export default defineConfig({
         dateStyle: 'full',
         timeStyle: 'medium'
       }
-    },
-    editLink: {
-      pattern: 'https://github.com/cola9104/cola9104.github.io/edit/main/docs/:path',
-      text: '编辑此页面'
     },
     scrollProgress: true,
   },
