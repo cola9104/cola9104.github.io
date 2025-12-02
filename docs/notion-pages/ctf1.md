@@ -1,7 +1,7 @@
 ---
 title: CTF1
 notionId: 2b522358-21c9-80f2-8065-c7469e603d2f
-lastSync: 2025-12-02T12:11:37.220Z
+lastSync: 2025-12-02T13:31:44.087Z
 layout: doc
 ---
 
