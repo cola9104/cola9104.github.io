@@ -9,8 +9,8 @@
         "collapsible": true,
         "items": [
           {
-            "text": "网络安全概括1",
-            "link": "/网络安全/网络安全概述/网络安全概括1/",
+            "text": "网络安全概括1 (1)",
+            "link": "/网络安全/网络安全概述/网络安全概括1-1/",
             "collapsible": true
           }
         ]
@@ -18,7 +18,14 @@
       {
         "text": "常见攻击类型",
         "link": "/网络安全/常见攻击类型/",
-        "collapsible": true
+        "collapsible": true,
+        "items": [
+          {
+            "text": "网络安全概括1",
+            "link": "/网络安全/常见攻击类型/网络安全概括1/",
+            "collapsible": true
+          }
+        ]
       },
       {
         "text": "防护策略",
@@ -38,6 +45,11 @@
       {
         "text": "安全运营中心",
         "link": "/网络安全/安全运营中心/",
+        "collapsible": true
+      },
+      {
+        "text": "企业安全建设与人员需求规划书",
+        "link": "/网络安全/企业安全建设与人员需求规划书/",
         "collapsible": true
       }
     ]
@@ -123,6 +135,17 @@
       {
         "text": "CTF1",
         "link": "/CTF竞赛/CTF1/",
+        "collapsible": true
+      }
+    ]
+  },
+  {
+    "text": "系统架构设计师",
+    "link": "/系统架构设计师/",
+    "items": [
+      {
+        "text": "计算机硬件",
+        "link": "/系统架构设计师/计算机硬件/",
         "collapsible": true
       }
     ]

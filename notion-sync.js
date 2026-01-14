@@ -246,6 +246,16 @@ async function main() {
     fs.writeFileSync(path.join(CACHE_DIR, 'navigation.json'), JSON.stringify(navigation, null, 2));
     console.log(`✅ Synced navigation structure.`);
 
+    // ✅ 新增：保存页面数据供 config.mjs 使用
+    const notionSyncData = {
+      pages: navigation,
+      total: navigation.length,
+      lastSync: new Date().toISOString(),
+      success: true
+    };
+    fs.writeFileSync(path.join(process.cwd(), 'docs', '.vitepress', 'notion-sync.json'), JSON.stringify(notionSyncData, null, 2));
+    console.log(`✅ Synced ${navigation.length} pages to notion-sync.json for config.mjs`);
+
     await updateHomepage(navigation);
 
     // ✅ 新增：真正获取 Notion 页面内容

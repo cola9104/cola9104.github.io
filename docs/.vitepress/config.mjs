@@ -6,11 +6,20 @@ import fs from 'fs'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const notionSyncPath = path.resolve(__dirname, 'notion-sync.json')
-const rawSync = fs.existsSync(notionSyncPath)
-  ? JSON.parse(fs.readFileSync(notionSyncPath, 'utf-8'))
-  : {}
-const pagesData = Array.isArray(rawSync.pages) ? rawSync.pages : []
+// 读取 notion-sync.json，如果失败则使用空数组
+let pagesData = []
+try {
+  const notionSyncPath = path.resolve(__dirname, 'notion-sync.json')
+  if (fs.existsSync(notionSyncPath)) {
+    const rawSync = JSON.parse(fs.readFileSync(notionSyncPath, 'utf-8'))
+    // 兼容不同的数据结构
+    pagesData = Array.isArray(rawSync.pages) ? rawSync.pages :
+                Array.isArray(rawSync) ? rawSync :
+                (rawSync.pages && Array.isArray(rawSync.pages)) ? rawSync.pages : []
+  }
+} catch (error) {
+  console.warn('⚠️  读取 notion-sync.json 失败，将使用空页面列表:', error.message)
+}
 
 // Helper to convert title to link
 const getLink = (title) => `/notion-pages/${title.replace(/[^\w\u4e00-\u9fa5]/g, '-').replace(/-+/g, '-').toLowerCase()}`
@@ -18,10 +27,10 @@ const getLink = (title) => `/notion-pages/${title.replace(/[^\w\u4e00-\u9fa5]/g,
 // Recursive function to map notion-sync tree to VitePress sidebar items
 function mapToSidebarItems(nodes) {
   if (!nodes || nodes.length === 0) return []
-  
+
   return nodes.map(node => ({
-    text: node.title,
-    link: getLink(node.title),
+    text: node.text,
+    link: node.link,
     collapsed: true, // Default to closed to avoid too long sidebar
     items: mapToSidebarItems(node.items)
   }))
@@ -29,8 +38,8 @@ function mapToSidebarItems(nodes) {
 
 // Build notionPages for Nav (Top Level Only)
 const notionPages = pagesData.map(page => ({
-  text: page.title,
-  link: getLink(page.title),
+  text: page.text,
+  link: page.link,
   items: mapToSidebarItems(page.items) // Store full tree for sidebar construction
 }))
 
@@ -81,9 +90,8 @@ export default defineConfig({
   lang: 'zh-CN',
   appearance: 'auto',
   themeConfig: {
-    // ✅ 改进：使用动态生成的侧边栏配置
-    // 侧边栏配置会根据 notion-sync.json 自动生成
-    // 如果 notion-sync.json 不存在或数据为空，则使用空侧边栏
+    // ✅ 纯动态侧边栏配置
+    // 侧边栏完全基于 Notion 页面结构自动生成
     sidebar: {
       '/': [],
       ...buildSidebarConfig(notionPages)
@@ -96,16 +104,13 @@ export default defineConfig({
     },
     nav: [
       { text: '首页', link: '/', activeMatch: '^/$' },
+      // 动态生成导航菜单
       ...notionPages.map(page => ({
         text: page.text,
         link: page.link,
         activeMatch: `^${page.link}`
       }))
     ],
-    sidebar: {
-      '/': [],
-      ...buildSidebarConfig(notionPages)
-    },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/cola9104' },
       { icon: 'twitter', link: 'https://twitter.com' },
