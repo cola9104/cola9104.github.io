@@ -204,12 +204,12 @@ jobs:
           # 运行同步脚本
           node sync-notion.js
 
-          # 运行页面合并脚本（网络安全页面）
-          echo "🔄 开始合并网络安全相关页面..."
-          if node merge-notion-pages-optimized.js; then
-            echo "✅ 网络安全页面合并成功"
+          # 运行递归同步脚本（支持无限层级嵌套）
+          echo "🔄 开始递归同步 Notion 页面（支持无限层级嵌套）..."
+          if node sync-all-notion-pages-recursive.js; then
+            echo "✅ 递归同步成功"
           else
-            echo "⚠️ 网络安全页面合并失败，但继续执行..."
+            echo "⚠️ 递归同步失败，但继续执行..."
           fi
 
           # 运行侧边栏配置更新脚本

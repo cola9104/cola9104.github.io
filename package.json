@@ -10,6 +10,9 @@
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "sync:notion": "node notion-sync.js",
+    "sync:notion:full": "node sync-all-notion-pages.js",
+    "sync:notion:incr": "node sync-all-notion-pages-incremental.js",
+    "sync:notion:recursive": "node sync-all-notion-pages-recursive.js",
     "lint": "eslint . --ext .js,.vue",
     "lint:fix": "eslint . --ext .js,.vue --fix",
     "format": "prettier --write \"**/*.{js,vue,json,md,yml,yaml}\""

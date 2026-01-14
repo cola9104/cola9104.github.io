@@ -1,6 +1,6 @@
 ---
 title: 系统架构设计师
-description: 系统架构设计师相关内容
+description: 系统架构设计师
 ---
 
 # 系统架构设计师

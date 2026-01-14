@@ -1,42 +1,52 @@
 {
-  "syncTime": "2026-01-14T01:17:21.916Z",
+  "syncTime": "2026-01-14T03:02:11.012Z",
+  "syncType": "recursive",
   "totalCategories": 7,
-  "totalPages": 19,
+  "totalPages": 26,
+  "updatedPages": 26,
+  "unchangedPages": 0,
   "categories": [
     {
       "title": "网络安全",
       "path": "/网络安全/",
-      "pageCount": 7
+      "pageCount": 8,
+      "updatedCount": 8
     },
     {
       "title": "渗透测试",
       "path": "/渗透测试/",
-      "pageCount": 4
+      "pageCount": 5,
+      "updatedCount": 5
     },
     {
       "title": "漏洞分析",
       "path": "/漏洞分析/",
-      "pageCount": 2
+      "pageCount": 3,
+      "updatedCount": 3
     },
     {
       "title": "嵌入式安全",
       "path": "/嵌入式安全/",
-      "pageCount": 2
+      "pageCount": 3,
+      "updatedCount": 3
     },
     {
       "title": "编程技术",
       "path": "/编程技术/",
-      "pageCount": 2
+      "pageCount": 3,
+      "updatedCount": 3
     },
     {
       "title": "CTF竞赛",
       "path": "/CTF竞赛/",
-      "pageCount": 1
+      "pageCount": 2,
+      "updatedCount": 2
     },
     {
       "title": "系统架构设计师",
       "path": "/系统架构设计师/",
-      "pageCount": 1
+      "pageCount": 2,
+      "updatedCount": 2
     }
   ]
 }

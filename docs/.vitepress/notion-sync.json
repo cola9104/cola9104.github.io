@@ -51,7 +51,14 @@
         {
           "text": "企业安全建设与人员需求规划书",
           "link": "/网络安全/企业安全建设与人员需求规划书/",
-          "collapsible": true
+          "collapsible": true,
+          "items": [
+            {
+              "text": "渗透测试合规与资质指南",
+              "link": "/网络安全/企业安全建设与人员需求规划书/渗透测试合规与资质指南/",
+              "collapsible": true
+            }
+          ]
         }
       ]
     },
@@ -157,6 +164,6 @@
     }
   ],
   "total": 8,
-  "lastSync": "2026-01-14T01:16:58.621Z",
+  "lastSync": "2026-01-14T03:01:52.665Z",
   "success": true
 }

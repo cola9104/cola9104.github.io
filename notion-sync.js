@@ -258,15 +258,15 @@ async function main() {
 
     await updateHomepage(navigation);
 
-    // ✅ 新增：真正获取 Notion 页面内容
+    // ✅ 新增：真正获取 Notion 页面内容（支持无限层级嵌套）
     console.log('\n📄 开始获取页面内容...');
     try {
-      const syncAllPages = await import('./sync-all-notion-pages.js');
+      const syncAllPages = await import('./sync-all-notion-pages-recursive.js');
       await syncAllPages.default();
       console.log('✅ 页面内容同步完成');
     } catch (error) {
       console.warn('⚠️  页面内容同步失败:', error.message);
-      console.warn('💡 提示: 这可能是因为 sync-all-notion-pages.js 执行失败，但不影响主流程');
+      console.warn('💡 提示: 这可能是因为 sync-all-notion-pages-recursive.js 执行失败，但不影响主流程');
     }
 
     console.log('\n🎉 Notion synchronization complete!');

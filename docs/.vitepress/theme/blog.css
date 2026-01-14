@@ -723,6 +723,61 @@ body {
 .VPSidebar {
   background: var(--bg-primary);
   border-right: 1px solid var(--border-color);
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* 确保侧边栏内容区域不溢出 */
+.VPSidebar .menu,
+.VPSidebar .nav {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* 优化侧边栏滚动条 - 半隐藏式 */
+.VPSidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.VPSidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.VPSidebar::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+/* 鼠标悬停或滚动时显示滚动条 */
+.VPSidebar:hover::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+}
+
+.VPSidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
+/* 深色模式下的滚动条 */
+.dark .VPSidebar:hover::-webkit-scrollbar-thumb {
+  background: rgba(203, 213, 225, 0.2);
+}
+
+.dark .VPSidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(203, 213, 225, 0.4);
+}
+
+/* Firefox 滚动条样式 - 半隐藏式 */
+.VPSidebar * {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.VPSidebar:hover * {
+  scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
 }
 
 /* 侧边栏分组标题样式 */
@@ -754,19 +809,15 @@ body {
 /* 一级子页面样式 */
 .VPSidebarItem.level-1 {
   margin-left: 0.5rem;
-  border-left: 2px solid var(--border-color);
   padding-left: 0.75rem;
   transition: var(--transition);
-}
-
-.VPSidebarItem.level-1:hover {
-  border-left-color: var(--primary-color);
 }
 
 .VPSidebarItem.level-1 > .item {
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
   transition: var(--transition);
+  position: relative;
 }
 
 .VPSidebarItem.level-1 > .item:hover {
@@ -778,6 +829,10 @@ body {
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .VPSidebarItem.level-1 > .item.active > .text {
@@ -785,22 +840,19 @@ body {
   font-weight: 700;
 }
 
+
 /* 二级子页面样式 */
 .VPSidebarItem.level-2 {
-  margin-left: 1rem;
-  border-left: 2px solid rgba(139, 92, 246, 0.2);
-  padding-left: 0.75rem;
+  margin-left: 0.5rem;
+  padding-left: 0.5rem;
   transition: var(--transition);
-}
-
-.VPSidebarItem.level-2:hover {
-  border-left-color: var(--secondary-color);
 }
 
 .VPSidebarItem.level-2 > .item {
   padding: 0.45rem 0.65rem;
   border-radius: 5px;
   transition: var(--transition);
+  position: relative;
 }
 
 .VPSidebarItem.level-2 > .item:hover {
@@ -812,6 +864,10 @@ body {
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .VPSidebarItem.level-2 > .item.active > .text {
@@ -819,20 +875,14 @@ body {
   font-weight: 600;
 }
 
-/* 三级及更深层级子页面样式 - 保持与二级子页面相似 */
+
+/* 三级及更深层级子页面样式 - 减少缩进防止文字折叠 */
 .VPSidebarItem.level-3,
 .VPSidebarItem.level-4,
 .VPSidebarItem.level-5 {
-  margin-left: 1rem;
-  border-left: 2px solid rgba(139, 92, 246, 0.15);
-  padding-left: 0.75rem;
+  margin-left: 0.5rem;
+  padding-left: 0.5rem;
   transition: var(--transition);
-}
-
-.VPSidebarItem.level-3:hover,
-.VPSidebarItem.level-4:hover,
-.VPSidebarItem.level-5:hover {
-  border-left-color: var(--secondary-color);
 }
 
 .VPSidebarItem.level-3 > .item,
@@ -841,6 +891,7 @@ body {
   padding: 0.45rem 0.65rem;
   border-radius: 5px;
   transition: var(--transition);
+  position: relative;
 }
 
 .VPSidebarItem.level-3 > .item:hover,
@@ -853,9 +904,13 @@ body {
 .VPSidebarItem.level-3 > .item > .text,
 .VPSidebarItem.level-4 > .item > .text,
 .VPSidebarItem.level-5 > .item > .text {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 500;
   color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .VPSidebarItem.level-3 > .item.active > .text,
@@ -865,28 +920,49 @@ body {
   font-weight: 600;
 }
 
+
 /* 折叠按钮样式优化 */
 .VPSidebarItem .caret {
-  width: 16px;
-  height: 16px;
-  border-radius: 4px;
-  transition: var(--transition);
+  min-width: 24px;
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   vertical-align: middle;
+  cursor: pointer;
+  position: relative;
 }
 
 .VPSidebarItem .caret:hover {
   background: var(--bg-tertiary);
-  transform: scale(1.1);
+  transform: scale(1.05);
+}
+
+.VPSidebarItem .caret:active {
+  transform: scale(0.95);
+}
+
+/* 增加点击区域 */
+.VPSidebarItem .caret::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
 }
 
 .VPSidebarItem .caret-icon {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+}
+
+.VPSidebarItem .caret:hover .caret-icon {
+  opacity: 1;
 }
 
 .VPSidebarItem.collapsed .caret-icon {
@@ -899,13 +975,55 @@ body {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding: 6px 8px;
+  margin: 2px 0;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.VPSidebarItem > .item:hover {
+  background: var(--bg-soft);
 }
 
 .VPSidebarItem > .item > .text {
   flex: 1;
   display: flex;
   align-items: center;
+  padding: 0 4px;
+  min-width: 0; /* 关键：允许flex子项收缩 */
+  max-width: 100%;
+  position: relative;
 }
+
+/* 强制所有层级的文本不换行（但保留悬停展开功能） */
+.VPSidebarItem .item .text:not(:hover) {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.VPSidebarItem .item {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.VPSidebarItem {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* 确保所有链接和文本容器都不换行（但保留悬停展开功能） */
+.VPSidebarItem a:not(:hover),
+.VPSidebarItem .link:not(:hover) {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: block !important;
+  max-width: 100% !important;
+}
+
 
 /* 激活状态指示器 */
 .VPSidebarItem > .item.active::before {
@@ -948,11 +1066,13 @@ body {
   overflow: hidden;
   transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
               opacity 0.3s ease;
+  margin-left: 16px;
 }
 
 .VPSidebarItem.collapsed .items {
-  max-height: 0;
+  max-height: 0 !important;
   opacity: 0;
+  margin-left: 0;
 }
 
 /* 侧边栏分组间距 */
@@ -964,7 +1084,30 @@ body {
 
 /* 侧边栏内边距优化 */
 .VPSidebar .nav {
-  padding: 1.5rem;
+  padding: 1.5rem 1rem 1.5rem 1.25rem;
+}
+
+/* 优化侧边栏内容区域 */
+.VPSidebar .menu {
+  padding-right: 0.5rem;
+}
+
+/* 优化侧边栏分组间距 */
+.VPSidebarGroup {
+  margin-bottom: 0.5rem;
+}
+
+/* 侧边栏顶部间距 */
+.VPSidebar .curtain {
+  padding-top: 0;
+}
+
+/* 改进深层级菜单的视觉效果 */
+.VPSidebarItem.level-2 > .item,
+.VPSidebarItem.level-3 > .item,
+.VPSidebarItem.level-4 > .item,
+.VPSidebarItem.level-5 > .item {
+  position: relative;
 }
 
 /* 深色模式下的侧边栏优化 */
