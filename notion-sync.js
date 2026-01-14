@@ -9,6 +9,23 @@ const NOTION_TOKEN = process.env.NOTION_TOKEN;
 const NOTION_MAIN_PAGE_ID = process.env.NOTION_MAIN_PAGE_ID;
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID;
 
+// ✅ 改进：环境变量验证
+if (!NOTION_TOKEN) {
+  console.error('❌ 错误: NOTION_TOKEN 未设置');
+  console.error('📝 请在 .env 文件中配置 NOTION_TOKEN');
+  console.error('💡 获取方式: https://www.notion.so/my-integrations\n');
+  process.exit(1);
+}
+
+if (!NOTION_MAIN_PAGE_ID) {
+  console.error('❌ 错误: NOTION_MAIN_PAGE_ID 未设置');
+  console.error('📝 请在 .env 文件中配置 NOTION_MAIN_PAGE_ID');
+  console.error('💡 这是你的 Notion 主页面 ID\n');
+  process.exit(1);
+}
+
+console.log('✅ 环境变量验证通过');
+
 const CACHE_DIR = path.join(process.cwd(), '.notion-cache');
 const PUBLIC_DIR = path.join(process.cwd(), 'docs', 'public');
 const CACHE_DURATION = 1000 * 60 * 60; // 1 hour
@@ -225,13 +242,24 @@ async function main() {
 
     fs.writeFileSync(path.join(PUBLIC_DIR, 'notion-data.json'), JSON.stringify(notionData, null, 2));
     console.log(`✅ Synced ${transformedPages.length} pages to notion-data.json`);
-    
+
     fs.writeFileSync(path.join(CACHE_DIR, 'navigation.json'), JSON.stringify(navigation, null, 2));
     console.log(`✅ Synced navigation structure.`);
 
     await updateHomepage(navigation);
 
-    console.log('🎉 Notion synchronization complete!');
+    // ✅ 新增：真正获取 Notion 页面内容
+    console.log('\n📄 开始获取页面内容...');
+    try {
+      const syncAllPages = await import('./sync-all-notion-pages.js');
+      await syncAllPages.default();
+      console.log('✅ 页面内容同步完成');
+    } catch (error) {
+      console.warn('⚠️  页面内容同步失败:', error.message);
+      console.warn('💡 提示: 这可能是因为 sync-all-notion-pages.js 执行失败，但不影响主流程');
+    }
+
+    console.log('\n🎉 Notion synchronization complete!');
   } catch (error) {
     console.error('❌ Notion synchronization failed:', error);
     process.exit(1);

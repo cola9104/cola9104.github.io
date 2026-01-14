@@ -222,14 +222,20 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
 
+          # 先拉取远程最新代码，避免冲突
+          echo "📥 拉取远程最新代码..."
+          git pull --rebase origin main || echo "⚠️ 远程没有新内容或快进失败"
+
           # 添加可能更改的文件
           git add docs/.vitepress/notion-sync.json || true
           git add docs/.vitepress/config.mjs || true
 
           if git diff --quiet --cached; then
-            echo "没有更改需要提交"
+            echo "✅ 没有更改需要提交"
           else
+            echo "💾 提交更改..."
             git commit -m "🔄 自动同步Notion内容和更新侧边栏 - $(date '+%Y-%m-%d %H:%M:%S')"
+            echo "📤 推送到远程..."
             git push
           fi
 

@@ -11,14 +11,20 @@ const NOTION_MAIN_PAGE_ID = process.env.NOTION_MAIN_PAGE_ID;
 
 // 验证环境变量
 if (!NOTION_TOKEN) {
-  console.error('❌ NOTION_TOKEN 未设置');
+  console.error('❌ 错误: NOTION_TOKEN 未设置');
+  console.error('📝 请在 .env 文件中配置 NOTION_TOKEN');
+  console.error('💡 获取方式: https://www.notion.so/my-integrations\n');
   process.exit(1);
 }
 
 if (!NOTION_MAIN_PAGE_ID) {
-  console.error('❌ NOTION_MAIN_PAGE_ID 未设置');
+  console.error('❌ 错误: NOTION_MAIN_PAGE_ID 未设置');
+  console.error('📝 请在 .env 文件中配置 NOTION_MAIN_PAGE_ID');
+  console.error('💡 这是你的 Notion 主页面 ID\n');
   process.exit(1);
 }
+
+console.log('✅ 环境变量验证通过\n');
 
 /**
  * 延迟函数

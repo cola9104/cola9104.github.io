@@ -1,66 +1,87 @@
 # Cola的网络安全博客
 
-一个基于VitePress构建的网络安全博客，支持从Notion获取文章数据。
+一个基于VitePress构建的网络安全博客，支持从Notion自动同步内容。
 
 ## ✨ 特性
 
 - 🔒 **网络安全专题**：涵盖网络安全、渗透测试、漏洞分析、CTF竞赛
-- 📝 **Notion集成**：从Notion数据库获取和管理文章
+- 📝 **Notion集成**：从Notion自动获取和同步文章内容
 - 🌲 **多级子页面**：支持无限层级的页面嵌套，自动生成侧边栏
+- 🤖 **完全自动化**：GitHub Actions 每日自动同步并部署
 - 🎨 **现代设计**：响应式设计，支持深色模式
-- 🔍 **全文搜索**：内置搜索功能
+- 🔍 **全文搜索**：内置搜索功能，支持中文
 - 📱 **移动友好**：完美适配各种设备
 - ⚡ **快速加载**：基于VitePress的极速构建
+
+## 🎉 最近更新 (2026-01-14)
+
+- ✅ 修复 GitHub Actions 推送冲突问题
+- ✅ 实现真正的 Notion 内容自动同步
+- ✅ 优化配置文件，统一使用动态侧边栏
+- ✅ 完善错误处理和环境变量验证
+- 📖 详细优化说明请查看 [OPTIMIZATION_GUIDE.md](./OPTIMIZATION_GUIDE.md)
 
 ## 🚀 快速开始
 
 ### 环境要求
 
-- Node.js >= 16
-- pnpm >= 8
+- Node.js >= 20
+- npm >= 10
 
 ### 安装依赖
 
 ```bash
-pnpm install
+npm install
 ```
 
 ### 配置Notion API
 
-1. 复制环境变量配置文件：
-```bash
-cp env.example .env
-```
-
-2. 获取Notion API Token：
+1. **获取 Notion API Token**:
    - 访问 [Notion Integrations](https://www.notion.so/my-integrations)
    - 创建新的集成
-   - 复制生成的Token
+   - 复制生成的 "Internal Integration Token"
 
-3. 获取数据库ID：
-   - 在Notion中创建数据库
-   - 从数据库URL中提取ID
-   - 格式：`xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`
+2. **获取 Notion Page ID**:
+   - 打开你的 Notion 主页面
+   - 从 URL 中复制页面 ID（32位字符）
+   - URL 格式: `https://www.notion.so/username/Page-Title-[32位ID]`
 
-4. 配置环境变量：
+3. **配置环境变量**:
 ```bash
+# 复制示例配置文件
+cp .env.example .env
+
 # 编辑 .env 文件
-NOTION_TOKEN=your_notion_token_here
-NOTION_DATABASE_ID=your_database_id_here
+NOTION_TOKEN=Bearer xxxxxxxxxxxxxxxxxx
+NOTION_MAIN_PAGE_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+NOTION_DATABASE_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (可选)
+```
+
+**注意**: NOTION_TOKEN 必须包含 "Bearer " 前缀（有空格）
+
+### 同步Notion内容
+
+```bash
+# 同步 Notion 内容到本地
+npm run sync:notion
+
+# 或直接运行
+node notion-sync.js
 ```
 
 ### 启动开发服务器
 
 ```bash
-pnpm docs:dev
+npm run docs:dev
 ```
 
-访问 http://localhost:3000 查看博客。
+访问 http://localhost:5173 查看博客。
 
 ### 构建生产版本
 
 ```bash
-pnpm docs:build
+npm run docs:build
+npm run docs:preview
 ```
 
 ## 🌲 多级子页面功能
