@@ -31,7 +31,7 @@ jobs:
           fetch-depth: 0 # 如果启用了 lastUpdated 需要完整历史
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: npm
