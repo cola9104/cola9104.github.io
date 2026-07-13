@@ -167,8 +167,8 @@ export default defineConfig({
                 "link": "/编程技术/数据结构/"
               },
               {
-                "text": "C",
-                "link": "/编程技术/C/"
+                "text": "C语言",
+                "link": "/编程技术/C语言/"
               },
               {
                 "text": "RUST开发学习",
