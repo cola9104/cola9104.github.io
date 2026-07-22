@@ -193,8 +193,8 @@ export default defineConfig({
             "text": "AI",
             "items": [
               {
-                "text": "AI大模型",
-                "link": "/AI/AI大模型/"
+                "text": "机器学习",
+                "link": "/AI/机器学习/"
               },
               {
                 "text": "AI Agnet",
