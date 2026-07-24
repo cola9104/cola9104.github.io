@@ -127,6 +127,10 @@ export default defineConfig({
               {
                 "text": "漏洞分析2",
                 "link": "/漏洞分析/漏洞分析2/"
+              },
+              {
+                "text": "统一核心学习方法论（Windows 终端 EDR / Linux 服务器 EDR / CWPP 容器安全 通用）",
+                "link": "/漏洞分析/统一核心学习方法论Windows-终端-EDR-Linux-服务器-EDR-CWPP-容器安全-通用/"
               }
             ]
           }
