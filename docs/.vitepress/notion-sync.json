@@ -1,7 +1,7 @@
 {
   "totalPosts": 0,
-  "lastSync": "2026-07-24T04:18:07.406Z",
+  "lastSync": "2026-07-24T11:07:14.089Z",
   "status": "error",
-  "message": "NOTION_DATABASE_ID 不正确",
-  "error": "NOTION_DATABASE_ID 不正确"
+  "message": "数据库查询失败: 522 <none>",
+  "error": "数据库查询失败: 522 <none>"
 }
