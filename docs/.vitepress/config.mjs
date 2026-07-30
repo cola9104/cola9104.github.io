@@ -144,6 +144,10 @@ export default defineConfig({
                 "link": "/编程技术/计算机基础/"
               },
               {
+                "text": "操作系统",
+                "link": "/编程技术/操作系统/"
+              },
+              {
                 "text": "计算机网络",
                 "link": "/编程技术/计算机网络/"
               },
